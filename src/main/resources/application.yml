@@ -2,7 +2,7 @@ spring:
   application:
     name: project
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://mobylab-app-db:5432/postgres
     username: postgres
     password: postgres
   jpa:
@@ -44,6 +44,7 @@ vars:
 
 server:
   port: 8090
+  server.address: 0.0.0.0
 
 token:
   ttl: 3600000
