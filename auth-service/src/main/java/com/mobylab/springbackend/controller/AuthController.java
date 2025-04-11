@@ -24,11 +24,8 @@ public class AuthController {
 
     private AuthService authService;
 
-    private LoginResponseDto loginResponseDto;
-
-    public AuthController(AuthService authService, LoginResponseDto loginResponseDto) {
+    public AuthController(AuthService authService) {
         this.authService = authService;
-        this.loginResponseDto = loginResponseDto;
     }
 
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
@@ -47,7 +44,11 @@ public class AuthController {
         logger.info("Request to login for user {}", loginDto.getEmail());
         String token = authService.login(loginDto);
         logger.info("Successfully logged in user {}", loginDto.getEmail());
-        return new ResponseEntity<>(loginResponseDto.setToken(token), HttpStatus.OK);
+        return ResponseEntity.ok(
+                new LoginResponseDto()
+                        .setToken(token)
+                        .setExpire(3600000L)
+        );
     }
 
 //    @SecurityRequirement(name = "Bearer Authentication")

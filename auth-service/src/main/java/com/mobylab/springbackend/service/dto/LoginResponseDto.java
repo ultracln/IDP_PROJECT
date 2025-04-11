@@ -5,15 +5,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
-@Component
 public class LoginResponseDto {
 
     @JsonProperty("access_token")
     private String token;
+
     @JsonProperty("token_type")
     private String type = "Bearer";
+
     @JsonProperty("expires_in")
-    @Value("${token.ttl}")
     private long expire;
 
     public String getToken() {
@@ -43,3 +43,4 @@ public class LoginResponseDto {
         return this;
     }
 }
+

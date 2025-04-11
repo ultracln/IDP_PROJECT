@@ -23,14 +23,22 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+
         Optional<com.mobylab.springbackend.entity.User> optionalUser = userRepository.findUserByEmail(email);
         if (optionalUser.isPresent()) {
             com.mobylab.springbackend.entity.User user = optionalUser.get();
+            System.out.println("Loading user: " + email);
+            System.out.println("Returning user with password: " + user.getPassword());
+            System.out.println("Roles: " + user.getRoles().stream().map(Role::getName).toList());
+
             return new User(user.getEmail(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
         } else
             throw new UsernameNotFoundException("User not found");
     }
-    private Collection<GrantedAuthority> mapRolesToAuthorities(List<Role> roles){
-        return roles.stream().map(role->new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
+    private Collection<GrantedAuthority> mapRolesToAuthorities(List<Role> roles) {
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
+                .collect(Collectors.toList());
     }
+
 }

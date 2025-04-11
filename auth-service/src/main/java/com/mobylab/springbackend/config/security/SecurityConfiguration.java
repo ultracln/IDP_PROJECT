@@ -25,7 +25,12 @@ public class SecurityConfiguration {
     @Value("${vars.security.enable}")
     private boolean securityEnabled;
 
+    @Autowired
     private JwtAuthEntryPoint authEntryPoint;
+
+    @Autowired
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
+
 
     private CustomUserDetailsService userDetailsService;
 
@@ -34,22 +39,27 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public SecurityFilterChain authServerSecurityFilterChain (HttpSecurity http) throws Exception{
+    public SecurityFilterChain authServerSecurityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
-        if (securityEnabled) {
-           http.authorizeHttpRequests(auth -> auth
-                   .requestMatchers("/offers/**","/api/v1/auth/login", "/api/v1/auth/register",
-                           "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html","/book/getByAuthor").permitAll()
-                   .anyRequest().authenticated())
-                   .exceptionHandling((exception)-> exception.authenticationEntryPoint(authEntryPoint))
-                   .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-           http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-        } else {
-            http.authorizeHttpRequests(auth -> auth
-                    .anyRequest().permitAll());
-        }
+
+        http.authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/api/v1/auth/login",
+                                "/api/v1/auth/register",
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/book/getByAuthor"
+                        ).permitAll()
+                        .anyRequest().authenticated())
+                .exceptionHandling(ex -> ex.authenticationEntryPoint(authEntryPoint))
+                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
+
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
@@ -61,8 +71,4 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter(){
-        return new JwtAuthenticationFilter();
-    }
 }

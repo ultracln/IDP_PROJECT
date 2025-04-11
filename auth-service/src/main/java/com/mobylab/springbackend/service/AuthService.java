@@ -48,7 +48,9 @@ public class AuthService {
         }
 
         List<Role> roleList = new ArrayList<>();
-        roleList.add(roleRepository.findRoleByName("USER").get());
+        roleList.add(roleRepository.findRoleByName("USER")
+                .orElseThrow(() -> new RuntimeException("USER role not found")));
+
 
         userRepository.save(new User()
                 .setEmail(registerDto.getEmail())
@@ -58,17 +60,27 @@ public class AuthService {
     }
 
     public String login(LoginDto loginDto) {
+        System.out.println("Attempting login for: " + loginDto.getEmail());
+
         Optional<User> optionalUser = userRepository.findUserByEmail(loginDto.getEmail());
-        if(optionalUser.isEmpty()) {
+        System.out.println("User found? " + optionalUser.isPresent());
+
+        if (optionalUser.isEmpty()) {
             throw new BadRequestException("Wrong credentials");
         }
+
+        System.out.println("Trying authenticationManager.authenticate()...");
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginDto.getEmail(),
-                        loginDto.getPassword()));
+                        loginDto.getPassword()
+                )
+        );
+
+        System.out.println("Authentication succeeded. Generating token.");
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return jwtGenerator.generateToken(authentication);
-
     }
+
 }

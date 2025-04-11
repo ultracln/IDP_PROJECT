@@ -13,13 +13,18 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import io.jsonwebtoken.security.Keys;
+
+import javax.crypto.SecretKey;
+import java.util.Base64;
+
 @Component
 public class JwtGenerator {
 
     @Value("${token.secret}")
-    private String JWT_SECRET;
+    private String jwtSecret;
     @Value("${token.ttl}")
-    private long JWT_EXPIRY;
+    private long jwtExpirationInMs;
 
 
     public String generateToken(Authentication authentication) {
@@ -29,21 +34,25 @@ public class JwtGenerator {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
-        Date currentDate = new Date();
-        Date expireDate = new Date(currentDate.getTime() + JWT_EXPIRY);
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
+
+        // Correct way for jjwt 0.11.5
+        SecretKey key = Keys.hmacShaKeyFor(Base64.getDecoder().decode(jwtSecret));
+
         return Jwts.builder()
                 .setSubject(username)
                 .claim("roles", roles)
-                .setIssuedAt(new Date())
-                .setIssuer("http://localhost:8090")
-                .setExpiration(expireDate)
-                .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
+                .setIssuedAt(now)
+                .setIssuer("http://localhost:8081")
+                .setExpiration(expiryDate)
+                .signWith(SignatureAlgorithm.HS512, key)
                 .compact();
     }
 
     public String getUsernameFromJWT(String token) {
         Claims claims = Jwts.parser()
-                .setSigningKey(JWT_SECRET)
+                .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)
                 .getBody();
         return claims.getSubject();
@@ -51,7 +60,7 @@ public class JwtGenerator {
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(token);
+            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
             return true;
         } catch (Exception ex) {
             throw new AuthenticationCredentialsNotFoundException("JWT was expired or incorrect");
