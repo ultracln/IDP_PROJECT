@@ -1,0 +1,40 @@
+server:
+  port: 8082
+  address: 0.0.0.0
+
+spring:
+  application:
+    name: book-service
+  datasource:
+    url: jdbc:postgresql://mobylab-app-db:5432/postgres
+    username: postgres
+    password: postgres
+  jpa:
+    properties:
+      hibernate:
+        default_schema: project
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        show-sql: true
+        ddl-auto: update
+    open-in-view: false
+
+  mail:
+    host: sandbox.smtp.mailtrap.io
+    port: 2525
+    username: 80579ee70d4a4f
+    password: 45414c44802ca4
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000
+
+token:
+  secret: Vp47vXw3PVh7wEqmiT9EhK3Dfs4nVaG9W4g8UCZDWl+M3K7t4cKnVCR4Lvx3V8zEhR3A4P3ehFQsM5vU7cqA5g==
+
+auth-service:
+  base-url: http://auth-service:8081
