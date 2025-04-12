@@ -33,9 +33,10 @@ public class BookController implements SecuredRestController {
     }
 
     @PostMapping("/addBook")
-    @PreAuthorize("hasAuthority('USER')")
-    public ResponseEntity<Book> addBook(@RequestBody BookDto bookDto){
-        Book book = bookService.addBook(bookDto);
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public ResponseEntity<Book> addBook(@RequestBody BookDto bookDto, Principal principal) {
+        String email = principal.getName(); // extracted from JWT
+        Book book = bookService.addBook(bookDto, email);
         return ResponseEntity.status(201).body(book);
     }
 
@@ -43,8 +44,8 @@ public class BookController implements SecuredRestController {
     @PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
     public ResponseEntity<Void> deleteBookByTitle(@RequestParam String title,
                                                   Principal principal) {
-        UUID userId = UUID.fromString(principal.getName()); // get from JWT via principal
-        boolean deleted = bookService.deleteBookByTitleAndOwner(title, userId);
+        String email = principal.getName();
+        boolean deleted = bookService.deleteBookByTitleAndOwner(title, email);
 
         if (deleted) {
             return ResponseEntity.noContent().build(); // 204
@@ -52,6 +53,5 @@ public class BookController implements SecuredRestController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 404
         }
     }
-
 
 }

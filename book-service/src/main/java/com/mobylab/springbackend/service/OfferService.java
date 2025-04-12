@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Value;
 
-
+import java.util.stream.Collectors;
 import java.util.*;
 
 @Service
@@ -25,6 +25,11 @@ public class OfferService {
 
     @Autowired
     private AuthServiceClient authServiceClient;
+
+    public OfferService(OfferRepository offerRepository, AuthServiceClient authServiceClient) {
+        this.offerRepository = offerRepository;
+        this.authServiceClient = authServiceClient;
+    }
 
     public OfferDto createFromAuthenticatedUser(CreateOfferFromContextDto dto, UUID senderId, UUID receiverId) {
         List<UUID> offeredBooks = resolveBookIdsFromTitles(dto.getOfferedBookTitles(), senderId);
@@ -49,7 +54,7 @@ public class OfferService {
 
 
     public List<OfferDto> getOffersReceivedByUserId(UUID userId) {
-        List<Offer> offers = offerRepository.findAllWithDetails();
+        List<Offer> offers = offerRepository.findAll();
         List<OfferDto> result = new ArrayList<>();
 
         for (Offer offer : offers) {
@@ -61,30 +66,43 @@ public class OfferService {
         return result;
     }
 
+    public List<OfferDto> getAllOffers() {
+        return offerRepository.findAll().stream().map(offer -> {
+            OfferDto dto = new OfferDto();
+            dto.setId(offer.getId());
+            dto.setStatus(offer.getStatus());
+
+            dto.setSenderEmail(authServiceClient.getUserEmailById(offer.getSenderId()));
+            dto.setReceiverEmail(authServiceClient.getUserEmailById(offer.getReceiverId()));
+
+            dto.setOfferedBookTitles(
+                    offer.getOfferedBooks().stream()
+                            .map(ob -> ob.getBook().getTitle())
+                            .toList()
+            );
+            dto.setRequestedBookTitles(
+                    offer.getRequestedBooks().stream()
+                            .map(rb -> rb.getBook().getTitle())
+                            .toList()
+            );
+
+            return dto;
+        }).toList();
+    }
+
 
     private OfferDto deleteBooksFromOffer(Offer offer) {
         OfferDto offerDto = toDto(offer);
-//        Set<OfferedBook> offeredsBooks = offer.getOfferedBooks();
-//        Set<OfferedBook> requestedBooks = offer.getRequestedBooks();
-//        for (OfferedBook offered : offeredsBooks) {
-//            Book book = offered.getBook();
-//            bookService.deleteBookByTitleAndOwner(book.getTitle(), book.getOwner().getEmail());
-//        }
-//
-//        for (OfferedBook requested : requestedBooks) {
-//            Book book = requested.getBook();
-//            bookService.deleteBookByTitleAndOwner(book.getTitle(), book.getOwner().getEmail());
-//        }
         for (OfferedBook ob : offer.getOfferedBooks()) {
             Book book = ob.getBook();
-            bookService.deleteBookByTitleAndOwner(book.getTitle(), book.getOwnerId());
+            String email = authServiceClient.getUserEmailById(book.getOwnerId());
+            bookService.deleteBookByTitleAndOwner(book.getTitle(), email);
         }
         return offerDto;
     }
 
-
     public OfferDto respondToOffer(UUID offerId, String newStatus, UUID userId) {
-        Offer offer = offerRepository.findByIdFull(offerId)
+        Offer offer = offerRepository.findById(offerId)
                 .orElseThrow(() -> new RuntimeException("Offer not found"));
 
         if (!userId.equals(offer.getReceiverId()) && !userId.equals(offer.getSenderId())) {
@@ -139,6 +157,17 @@ public class OfferService {
             offeredBookRepository.save(offerBook);
         }
     }
+
+    public List<OfferDto> getOffersReceivedByEmail(String email) {
+        UUID userId = authServiceClient.getUserIdByEmail(email);
+        return getOffersReceivedByUserId(userId);
+    }
+
+    public OfferDto respondToOffer(UUID offerId, String newStatus, String email) {
+        UUID userId = authServiceClient.getUserIdByEmail(email);
+        return respondToOffer(offerId, newStatus, userId);
+    }
+
 
 
     private OfferDto toDto(Offer offer) {

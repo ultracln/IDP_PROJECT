@@ -34,7 +34,7 @@ spring:
           writetimeout: 5000
 
 token:
-  secret: "https://www.youtube.com/watch?v=VBUMYOYJISc"
+  secret: Vp47vXw3PVh7wEqmiT9EhK3Dfs4nVaG9W4g8UCZDWl+M3K7t4cKnVCR4Lvx3V8zEhR3A4P3ehFQsM5vU7cqA5g==
 
 auth-service:
   base-url: http://auth-service:8081

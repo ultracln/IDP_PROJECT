@@ -27,14 +27,9 @@ import java.util.UUID;
 public class BookService {
     private final BookRepository bookRepository;
     private final AuthServiceClient authServiceClient;
-    @Autowired
-    private OfferedBookRepository offeredBookRepository;
 
-//    @Autowired
-//    private RequestedBookRepository requestedBookRepository;
-
-    @Autowired
-    private OfferRepository offerRepository;
+    @Autowired private OfferedBookRepository offeredBookRepository;
+    @Autowired private OfferRepository offerRepository;
 
     public BookService(BookRepository bookRepository, AuthServiceClient authServiceClient) {
         this.bookRepository = bookRepository;
@@ -42,8 +37,7 @@ public class BookService {
     }
 
     public List<BookWithOwnerDto> getBooksByAuthor(String author) {
-        List<Book> books = bookRepository.getBooksByAuthor(author)
-                .orElse(Collections.emptyList());
+        List<Book> books = bookRepository.getBooksByAuthor(author).orElse(Collections.emptyList());
 
         return books.stream()
                 .map(book -> new BookWithOwnerDto()
@@ -53,25 +47,25 @@ public class BookService {
                 .collect(Collectors.toList());
     }
 
-    public Book addBook(BookDto bookDto) {
+    public Book addBook(BookDto bookDto, String email) {
         Book book = new Book();
         book.setAuthor(bookDto.getAuthor());
         book.setTitle(bookDto.getTitle());
 
-        UUID userId = getAuthenticatedUserIdFromJwt();
+        UUID userId = authServiceClient.getUserIdByEmail(email);
         book.setOwnerId(userId);
-
 
         return bookRepository.save(book);
     }
-    public boolean deleteBookByTitleAndOwner(String title, UUID userId) {
+
+    public boolean deleteBookByTitleAndOwner(String title, String email) {
+        UUID userId = authServiceClient.getUserIdByEmail(email);
         Optional<List<Book>> optionalBooks = bookRepository.getBooksByTitle(title);
+
         if (optionalBooks.isPresent()) {
             for (Book book : optionalBooks.get()) {
                 if (book.getOwnerId() != null && book.getOwnerId().equals(userId)) {
-
                     List<Offer> offers = offerRepository.findAllByBook(book.getId());
-
                     for (Offer offer : offers) {
                         offeredBookRepository.deleteAll(offer.getOfferedBooks());
                         offer.setOfferedBooks(null);
@@ -85,11 +79,4 @@ public class BookService {
         }
         return false;
     }
-
-
-    private UUID getAuthenticatedUserIdFromJwt() {
-        return (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    }
-
-
 }

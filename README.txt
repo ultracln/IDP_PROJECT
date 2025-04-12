@@ -10,7 +10,7 @@ mvn clean package -DskipTests
 docker-compose -f docker-compose.yml -p mobylab-app up --build -d
 
 # stop.sh
-docker-compose -f docker-compose.yml -p mobylab-app down -v --remove-orphans
+docker-compose -f docker-compose.yml -p mobylab-app down --remove-orphans
 
 
 # pgAdmin
