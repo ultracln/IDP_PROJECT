@@ -41,7 +41,7 @@ public class BookController implements SecuredRestController {
     }
 
     @DeleteMapping("/deleteByTitle")
-    @PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteBookByTitle(@RequestParam String title,
                                                   Principal principal) {
         String email = principal.getName();

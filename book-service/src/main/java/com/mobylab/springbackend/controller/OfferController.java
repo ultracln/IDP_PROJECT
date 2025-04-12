@@ -23,7 +23,7 @@ public class OfferController implements SecuredRestController {
     @GetMapping("/received/me")
     @PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
     public List<OfferDto> getOffersReceivedByAuthenticatedUser(Principal principal) {
-        String email = principal.getName(); // ✅ use email directly
+        String email = principal.getName();
         return offerService.getOffersReceivedByEmail(email);
     }
 

@@ -35,6 +35,14 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorObject, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(BookAlreadyExistsException.class)
+    public ResponseEntity<ErrorObject> handleBookAlreadyExists(BookAlreadyExistsException ex, WebRequest request) {
+        ErrorObject errorObject = new ErrorObject();
+        errorObject
+                .setStatusCode(HttpStatus.CONFLICT.value())
+                .setMessage(ex.getMessage())
+                .setTimestamp(LocalDateTime.now());
 
-
+        return new ResponseEntity<>(errorObject, HttpStatus.CONFLICT);
+    }
 }

@@ -6,6 +6,7 @@ import com.mobylab.springbackend.entity.Offer;
 import com.mobylab.springbackend.repository.*;
 import com.mobylab.springbackend.service.dto.BookDto;
 import com.mobylab.springbackend.service.dto.BookWithOwnerDto;
+import com.mobylab.springbackend.exception.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -48,15 +49,28 @@ public class BookService {
     }
 
     public Book addBook(BookDto bookDto, String email) {
+        UUID userId = authServiceClient.getUserIdByEmail(email);
+
+        // Check for duplicate
+        Optional<List<Book>> existingBooks = bookRepository.getBooksByTitle(bookDto.getTitle());
+        if (existingBooks.isPresent()) {
+            boolean alreadyExists = existingBooks.get().stream().anyMatch(book ->
+                    book.getAuthor().equalsIgnoreCase(bookDto.getAuthor()) &&
+                            book.getOwnerId().equals(userId)
+            );
+            if (alreadyExists) {
+                throw new BookAlreadyExistsException("This book already exists for the user.");
+            }
+        }
+
         Book book = new Book();
         book.setAuthor(bookDto.getAuthor());
         book.setTitle(bookDto.getTitle());
-
-        UUID userId = authServiceClient.getUserIdByEmail(email);
         book.setOwnerId(userId);
 
         return bookRepository.save(book);
     }
+
 
     public boolean deleteBookByTitleAndOwner(String title, String email) {
         UUID userId = authServiceClient.getUserIdByEmail(email);

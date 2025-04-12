@@ -37,14 +37,23 @@ public class AuthServiceClient {
 
     public String getUserEmailById(UUID userId) {
         try {
-            return restTemplate.getForObject(
-                    authServiceBaseUrl + "/api/v1/users/" + userId + "/email",
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Authorization", getCurrentToken());
+            HttpEntity<Void> entity = new HttpEntity<>(headers);
+
+            ResponseEntity<String> response = restTemplate.exchange(
+                    authServiceBaseUrl + "/api/v1/auth/users/" + userId + "/email",
+                    HttpMethod.GET,
+                    entity,
                     String.class
             );
+
+            return response.getBody();
         } catch (Exception e) {
             return "unknown@example.com";
         }
     }
+
 
     private String getCurrentToken() {
         Object credentials = SecurityContextHolder.getContext().getAuthentication().getCredentials();
