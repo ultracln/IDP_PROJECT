@@ -23,7 +23,7 @@ public class AuthServiceClient {
             HttpEntity<Void> entity = new HttpEntity<>(headers);
 
             ResponseEntity<UUID> response = restTemplate.exchange(
-                    authServiceBaseUrl + "/api/v1/users/" + email + "/id",
+                    authServiceBaseUrl + "/api/v1/auth/users/email/" + email + "/id",
                     HttpMethod.GET,
                     entity,
                     UUID.class
