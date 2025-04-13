@@ -19,7 +19,6 @@ public class OfferService {
     @Autowired private OfferRepository offerRepository;
     @Autowired private BookRepository bookRepository;
     @Autowired private OfferedBookRepository offeredBookRepository;
-//    @Autowired private RequestedBookRepository requestedBookRepository;
     @Autowired private EmailService emailService;
     @Autowired private BookService bookService;
 
@@ -81,7 +80,8 @@ public class OfferService {
                             .toList()
             );
             dto.setRequestedBookTitles(
-                    offer.getRequestedBooks().stream()
+                    offer.getOfferedBooks().stream()
+                            .filter(OfferedBook::isRequested)
                             .map(rb -> rb.getBook().getTitle())
                             .toList()
             );
@@ -95,8 +95,7 @@ public class OfferService {
         OfferDto offerDto = toDto(offer);
         for (OfferedBook ob : offer.getOfferedBooks()) {
             Book book = ob.getBook();
-            String email = authServiceClient.getUserEmailById(book.getOwnerId());
-            bookService.deleteBookByTitleAndOwner(book.getTitle(), email);
+            bookService.deleteBookById(book.getId());
         }
         return offerDto;
     }
@@ -115,7 +114,7 @@ public class OfferService {
         if (userId.equals(offer.getReceiverId())) {
             if ("ACCEPTED".equalsIgnoreCase(newStatus) || "OK".equalsIgnoreCase(newStatus)) {
                 emailService.sendEmail("sender@example.com", "Oferta acceptata!", "Felicitări!");
-                return deleteBooksFromOffer(offer);
+                return swapBooks(offer);
             } else if ("REJECTED".equalsIgnoreCase(newStatus) || "NO".equalsIgnoreCase(newStatus)) {
                 emailService.sendEmail("sender@example.com", "Oferta respinsă!", "Ne pare rău!");
                 return deleteBooksFromOffer(offer);
@@ -154,9 +153,12 @@ public class OfferService {
             offerBook.setBook(book);
             offerBook.setRequested(!isRequested);
 
+            offer.getOfferedBooks().add(offerBook);
+
             offeredBookRepository.save(offerBook);
         }
     }
+
 
     public List<OfferDto> getOffersReceivedByEmail(String email) {
         UUID userId = authServiceClient.getUserIdByEmail(email);
@@ -167,8 +169,6 @@ public class OfferService {
         UUID userId = authServiceClient.getUserIdByEmail(email);
         return respondToOffer(offerId, newStatus, userId);
     }
-
-
 
     private OfferDto toDto(Offer offer) {
         OfferDto dto = new OfferDto();
@@ -192,4 +192,27 @@ public class OfferService {
 
         return dto;
     }
+
+    private OfferDto swapBooks(Offer offer) {
+        UUID senderId = offer.getSenderId();
+        UUID receiverId = offer.getReceiverId();
+
+        for (OfferedBook ob : offer.getOfferedBooks()) {
+            Book book = ob.getBook();
+
+            if (ob.isRequested()) {
+                // Book originally belonged to receiver -> send to sender
+                bookService.transferOwnership(book.getId(), senderId);
+            } else {
+                // Book originally belonged to sender -> send to receiver
+                bookService.transferOwnership(book.getId(), receiverId);
+            }
+        }
+
+        offer.setStatus("COMPLETED");
+        offerRepository.save(offer);
+
+        return toDto(offer);
+    }
+
 }
