@@ -117,4 +117,17 @@ public class BookService {
         bookRepository.save(book);
     }
 
+    private BookWithOwnerDto mapToBookWithOwnerDto(Book book) {
+        return new BookWithOwnerDto()
+                .setTitle(book.getTitle())
+                .setAuthor(book.getAuthor())
+                .setOwnerEmail(authServiceClient.getUserEmailById(book.getOwnerId()));
+    }
+
+    public List<BookWithOwnerDto> getAllBooks() {
+        List<Book> books = bookRepository.findAll();
+        return books.stream()
+                .map(this::mapToBookWithOwnerDto)
+                .toList();
+    }
 }

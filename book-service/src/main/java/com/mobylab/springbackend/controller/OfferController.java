@@ -59,4 +59,12 @@ public class OfferController implements SecuredRestController {
 
         return offerService.createFromAuthenticatedUser(dto, senderId, receiverId);
     }
+
+    @GetMapping("/me")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public List<OfferDto> getAllUserOffers(Principal principal) {
+        String email = principal.getName();
+        return offerService.getAllOffersByEmail(email);
+    }
+
 }

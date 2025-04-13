@@ -161,6 +161,15 @@ public class OfferService {
         return respondToOffer(offerId, newStatus, userId);
     }
 
+    public List<OfferDto> getAllOffersByEmail(String email) {
+        UUID userId = authServiceClient.getUserIdByEmail(email);
+
+        return offerRepository.findAll().stream()
+                .filter(offer -> offer.getSenderId().equals(userId) || offer.getReceiverId().equals(userId))
+                .map(this::toDto)
+                .toList();
+    }
+
     private OfferDto toDto(Offer offer) {
         OfferDto dto = new OfferDto();
         dto.setId(offer.getId());
