@@ -6,6 +6,7 @@ import com.mobylab.springbackend.service.dto.CreateOfferFromContextDto;
 import com.mobylab.springbackend.service.dto.OfferDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
@@ -23,6 +24,9 @@ public class OfferController implements SecuredRestController {
     @GetMapping("/received/me")
     @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public List<OfferDto> getOffersReceivedByAuthenticatedUser(Principal principal) {
+        System.out.println("🔍 Authenticated user: " + principal.getName());
+        System.out.println("🔐 Authorities: " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
+
         String email = principal.getName();
         return offerService.getOffersReceivedByEmail(email);
     }

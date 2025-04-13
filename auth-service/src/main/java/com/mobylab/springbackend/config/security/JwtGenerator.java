@@ -31,13 +31,12 @@ public class JwtGenerator {
         String username = authentication.getName();
 
         List<String> roles = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
+                .map(a -> a.getAuthority().replace("ROLE_", ""))
                 .collect(Collectors.toList());
 
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
 
-        // Correct way for jjwt 0.11.5
         SecretKey key = Keys.hmacShaKeyFor(Base64.getDecoder().decode(jwtSecret));
 
         return Jwts.builder()
