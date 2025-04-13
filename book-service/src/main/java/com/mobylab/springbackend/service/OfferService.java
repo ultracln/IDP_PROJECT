@@ -21,9 +21,7 @@ public class OfferService {
     @Autowired private OfferedBookRepository offeredBookRepository;
     @Autowired private EmailService emailService;
     @Autowired private BookService bookService;
-
-    @Autowired
-    private AuthServiceClient authServiceClient;
+    @Autowired private AuthServiceClient authServiceClient;
 
     public OfferService(OfferRepository offerRepository, AuthServiceClient authServiceClient) {
         this.offerRepository = offerRepository;
@@ -31,12 +29,22 @@ public class OfferService {
     }
 
     public OfferDto createFromAuthenticatedUser(CreateOfferFromContextDto dto, UUID senderId, UUID receiverId) {
+        if (senderId.equals(receiverId)) {
+            throw new RuntimeException("You cannot create an offer for yourself.");
+        }
+
         List<UUID> offeredBooks = resolveBookIdsFromTitles(dto.getOfferedBookTitles(), senderId);
+        if (offeredBooks.isEmpty()) {
+            throw new RuntimeException("No valid offered books found.");
+        }
+
         List<UUID> requestedBooks = resolveBookIdsFromTitles(dto.getRequestedBookTitles(), receiverId);
+        if (requestedBooks.isEmpty()) {
+            throw new RuntimeException("No valid requested books found.");
+        }
 
         return createOffer(senderId, receiverId, offeredBooks, requestedBooks);
     }
-
 
     public OfferDto createOffer(UUID senderId, UUID receiverId, List<UUID> offeredBookIds, List<UUID> requestedBookIds) {
         Offer offer = new Offer();
@@ -51,53 +59,15 @@ public class OfferService {
         return toDto(offer);
     }
 
-
     public List<OfferDto> getOffersReceivedByUserId(UUID userId) {
-        List<Offer> offers = offerRepository.findAll();
-        List<OfferDto> result = new ArrayList<>();
-
-        for (Offer offer : offers) {
-            if (offer.getReceiverId().equals(userId)) {
-                result.add(toDto(offer));
-            }
-        }
-
-        return result;
+        return offerRepository.findAll().stream()
+                .filter(o -> o.getReceiverId().equals(userId))
+                .map(this::toDto)
+                .toList();
     }
 
     public List<OfferDto> getAllOffers() {
-        return offerRepository.findAll().stream().map(offer -> {
-            OfferDto dto = new OfferDto();
-            dto.setId(offer.getId());
-            dto.setStatus(offer.getStatus());
-
-            dto.setSenderEmail(authServiceClient.getUserEmailById(offer.getSenderId()));
-            dto.setReceiverEmail(authServiceClient.getUserEmailById(offer.getReceiverId()));
-
-            dto.setOfferedBookTitles(
-                    offer.getOfferedBooks().stream()
-                            .map(ob -> ob.getBook().getTitle())
-                            .toList()
-            );
-            dto.setRequestedBookTitles(
-                    offer.getOfferedBooks().stream()
-                            .filter(OfferedBook::isRequested)
-                            .map(rb -> rb.getBook().getTitle())
-                            .toList()
-            );
-
-            return dto;
-        }).toList();
-    }
-
-
-    private OfferDto deleteBooksFromOffer(Offer offer) {
-        OfferDto offerDto = toDto(offer);
-        for (OfferedBook ob : offer.getOfferedBooks()) {
-            Book book = ob.getBook();
-            bookService.deleteBookById(book.getId());
-        }
-        return offerDto;
+        return offerRepository.findAll().stream().map(this::toDto).toList();
     }
 
     public OfferDto respondToOffer(UUID offerId, String newStatus, UUID userId) {
@@ -108,7 +78,7 @@ public class OfferService {
             throw new RuntimeException("You are not authorized to respond to this offer.");
         }
 
-        offer.setStatus(newStatus);
+        offer.setStatus(newStatus.toUpperCase());
         offerRepository.save(offer);
 
         if (userId.equals(offer.getReceiverId())) {
@@ -117,18 +87,16 @@ public class OfferService {
                 return swapBooks(offer);
             } else if ("REJECTED".equalsIgnoreCase(newStatus) || "NO".equalsIgnoreCase(newStatus)) {
                 emailService.sendEmail("sender@example.com", "Oferta respinsă!", "Ne pare rău!");
-                return deleteBooksFromOffer(offer);
+                return toDto(offer);
             }
         }
 
-        if (userId.equals(offer.getSenderId()) && "CANCEL".equalsIgnoreCase(newStatus)) {
-            return deleteBooksFromOffer(offer);
-        }
+//        if (userId.equals(offer.getSenderId()) && "CANCEL".equalsIgnoreCase(newStatus)) {
+//            return deleteBooksFromOffer(offer);  // Optional: still delete on cancel
+//        }
 
         return toDto(offer);
     }
-
-
 
     private List<UUID> resolveBookIdsFromTitles(List<String> titles, UUID ownerId) {
         return titles.stream()
@@ -142,7 +110,6 @@ public class OfferService {
                 .toList();
     }
 
-
     private void saveBooksForOffer(Offer offer, List<UUID> bookIds, boolean isRequested) {
         for (UUID bookId : bookIds) {
             Book book = bookRepository.findById(bookId)
@@ -154,11 +121,35 @@ public class OfferService {
             offerBook.setRequested(!isRequested);
 
             offer.getOfferedBooks().add(offerBook);
-
             offeredBookRepository.save(offerBook);
         }
     }
 
+    private OfferDto deleteBooksFromOffer(Offer offer) {
+        OfferDto offerDto = toDto(offer);
+        for (OfferedBook ob : offer.getOfferedBooks()) {
+            bookService.deleteBookById(ob.getBook().getId());
+        }
+        return offerDto;
+    }
+
+    private OfferDto swapBooks(Offer offer) {
+        UUID senderId = offer.getSenderId();
+        UUID receiverId = offer.getReceiverId();
+
+        for (OfferedBook ob : offer.getOfferedBooks()) {
+            Book book = ob.getBook();
+            if (ob.isRequested()) {
+                bookService.transferOwnership(book.getId(), senderId);
+            } else {
+                bookService.transferOwnership(book.getId(), receiverId);
+            }
+        }
+
+        offer.setStatus("COMPLETED");
+        offerRepository.save(offer);
+        return toDto(offer);
+    }
 
     public List<OfferDto> getOffersReceivedByEmail(String email) {
         UUID userId = authServiceClient.getUserIdByEmail(email);
@@ -177,42 +168,21 @@ public class OfferService {
         dto.setReceiverEmail(authServiceClient.getUserEmailById(offer.getReceiverId()));
         dto.setStatus(offer.getStatus());
 
-        List<String> offered = offer.getOfferedBooks().stream()
-                .filter(b -> !b.isRequested())
-                .map(ob -> ob.getBook().getTitle())
-                .toList();
+        dto.setOfferedBookTitles(
+                offer.getOfferedBooks().stream()
+                        .filter(b -> !b.isRequested())
+                        .map(ob -> ob.getBook().getTitle())
+                        .toList()
+        );
 
-        List<String> requested = offer.getOfferedBooks().stream()
-                .filter(OfferedBook::isRequested)
-                .map(rb -> rb.getBook().getTitle())
-                .toList();
-
-        dto.setOfferedBookTitles(offered);
-        dto.setRequestedBookTitles(requested);
+        dto.setRequestedBookTitles(
+                offer.getOfferedBooks().stream()
+                        .filter(OfferedBook::isRequested)
+                        .map(rb -> rb.getBook().getTitle())
+                        .toList()
+        );
 
         return dto;
     }
-
-    private OfferDto swapBooks(Offer offer) {
-        UUID senderId = offer.getSenderId();
-        UUID receiverId = offer.getReceiverId();
-
-        for (OfferedBook ob : offer.getOfferedBooks()) {
-            Book book = ob.getBook();
-
-            if (ob.isRequested()) {
-                // Book originally belonged to receiver -> send to sender
-                bookService.transferOwnership(book.getId(), senderId);
-            } else {
-                // Book originally belonged to sender -> send to receiver
-                bookService.transferOwnership(book.getId(), receiverId);
-            }
-        }
-
-        offer.setStatus("COMPLETED");
-        offerRepository.save(offer);
-
-        return toDto(offer);
-    }
-
 }
+
