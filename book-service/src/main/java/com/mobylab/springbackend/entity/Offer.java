@@ -27,9 +27,6 @@ public class Offer {
     @OneToMany(mappedBy = "offer", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<OfferedBook> offeredBooks = new HashSet<>();
 
-    @OneToMany(mappedBy = "offer", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<OfferedBook> requestedBooks = new HashSet<>();
-
     // Getters and setters
 
     public UUID getId() {
@@ -78,13 +75,5 @@ public class Offer {
 
     public void setOfferedBooks(Set<OfferedBook> offeredBooks) {
         this.offeredBooks = offeredBooks;
-    }
-
-    public Set<OfferedBook> getRequestedBooks() {
-        return requestedBooks;
-    }
-
-    public void setRequestedBooks(Set<OfferedBook> requestedBooks) {
-        this.requestedBooks = requestedBooks;
     }
 }

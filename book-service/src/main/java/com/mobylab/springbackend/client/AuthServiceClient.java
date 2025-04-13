@@ -5,6 +5,14 @@ import org.springframework.http.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import jakarta.servlet.http.HttpServletRequest;
+
 
 import java.util.UUID;
 
@@ -56,11 +64,29 @@ public class AuthServiceClient {
 
 
     private String getCurrentToken() {
-        Object credentials = SecurityContextHolder.getContext().getAuthentication().getCredentials();
-        if (credentials instanceof String token) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new RuntimeException("No authenticated user in security context");
+        }
+
+        // Try to extract from credentials
+        if (authentication.getCredentials() instanceof String token) {
             return "Bearer " + token;
         }
-        throw new RuntimeException("No JWT token found in security context");
+
+        // Try from Principal
+        if (authentication.getPrincipal() instanceof UserDetails userDetails) {
+            // Fallback: try reading from headers via RequestContextHolder
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+            String header = request.getHeader("Authorization");
+            if (header != null && header.startsWith("Bearer ")) {
+                return header;
+            }
+        }
+
+        throw new RuntimeException("Could not extract JWT token");
     }
+
 
 }

@@ -83,7 +83,6 @@ public class BookService {
                     for (Offer offer : offers) {
                         offeredBookRepository.deleteAll(offer.getOfferedBooks());
                         offer.setOfferedBooks(null);
-                        offer.setRequestedBooks(null);
                         offerRepository.delete(offer);
                     }
                     bookRepository.delete(book);
@@ -92,5 +91,43 @@ public class BookService {
             }
         }
         return false;
+    }
+
+    public boolean deleteBookById(UUID bookId) {
+        Optional<Book> bookOpt = bookRepository.findById(bookId);
+        if (bookOpt.isPresent()) {
+            Book book = bookOpt.get();
+            List<Offer> offers = offerRepository.findAllByBook(book.getId());
+            for (Offer offer : offers) {
+                offeredBookRepository.deleteAll(offer.getOfferedBooks());
+                offer.setOfferedBooks(null);
+                offerRepository.delete(offer);
+            }
+            bookRepository.delete(book);
+            return true;
+        }
+        return false;
+    }
+
+    public void transferOwnership(UUID bookId, UUID newOwnerId) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new RuntimeException("Book not found"));
+
+        book.setOwnerId(newOwnerId);
+        bookRepository.save(book);
+    }
+
+    private BookWithOwnerDto mapToBookWithOwnerDto(Book book) {
+        return new BookWithOwnerDto()
+                .setTitle(book.getTitle())
+                .setAuthor(book.getAuthor())
+                .setOwnerEmail(authServiceClient.getUserEmailById(book.getOwnerId()));
+    }
+
+    public List<BookWithOwnerDto> getAllBooks() {
+        List<Book> books = bookRepository.findAll();
+        return books.stream()
+                .map(this::mapToBookWithOwnerDto)
+                .toList();
     }
 }

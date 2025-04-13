@@ -32,6 +32,12 @@ public class BookController implements SecuredRestController {
         return ResponseEntity.status(200).body(bookDtoList);
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<List<BookWithOwnerDto>> getAllBooks() {
+        List<BookWithOwnerDto> books = bookService.getAllBooks();
+        return ResponseEntity.ok(books);
+    }
+
     @PostMapping("/addBook")
     @PreAuthorize("hasAuthority('ROLE_USER')")
     public ResponseEntity<Book> addBook(@RequestBody BookDto bookDto, Principal principal) {
