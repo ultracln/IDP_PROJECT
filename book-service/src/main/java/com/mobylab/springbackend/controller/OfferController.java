@@ -24,9 +24,6 @@ public class OfferController implements SecuredRestController {
     @GetMapping("/received/me")
     @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public List<OfferDto> getOffersReceivedByAuthenticatedUser(Principal principal) {
-        System.out.println("🔍 Authenticated user: " + principal.getName());
-        System.out.println("🔐 Authorities: " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
-
         String email = principal.getName();
         return offerService.getOffersReceivedByEmail(email);
     }

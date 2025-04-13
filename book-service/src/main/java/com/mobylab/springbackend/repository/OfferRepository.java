@@ -14,8 +14,12 @@ import java.util.UUID;
 @Repository
 public interface OfferRepository extends JpaRepository<Offer, UUID> {
 
-    @EntityGraph(attributePaths = {"offeredBooks.book"})
+    @Override
+    @EntityGraph(attributePaths = {"offeredBooks", "offeredBooks.book"})
     List<Offer> findAll();
+
+    @EntityGraph(attributePaths = {"offeredBooks", "offeredBooks.book"})
+    Optional<Offer> findById(UUID id);
 
     @Query("SELECT o FROM Offer o JOIN o.offeredBooks ob WHERE ob.book.id = :bookId AND ob.isRequested = false")
     List<Offer> findAllByOfferedBook(@Param("bookId") UUID bookId);
@@ -26,4 +30,3 @@ public interface OfferRepository extends JpaRepository<Offer, UUID> {
     @Query("SELECT o FROM Offer o JOIN o.offeredBooks ob WHERE ob.book.id = :bookId")
     List<Offer> findAllByBook(@Param("bookId") UUID bookId);
 }
-
