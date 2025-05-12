@@ -1,0 +1,31 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Java 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Build Auth Service with Maven
+      working-directory: ./auth-service
+      run: mvn clean package -DskipTests
+
+    - name: Build Book Service with Maven
+      working-directory: ./book-service
+      run: mvn clean package -DskipTests
+
+    - name: Build Docker Images
+      run: docker compose -f docker-compose.yml -p mobylab-app build
