@@ -13,3 +13,6 @@ docker build -t bookswap/book-service ./book-service
 
 echo "Deploying stack to Docker Swarm..."
 docker stack deploy -c docker-compose.yml bookswap
+
+echo "Deploying Portainer stack..."
+docker stack deploy -c portainer-stack.yml portainer
