@@ -1,18 +1,5 @@
-workflow without docker swarm:
-
-cd auth-service
-./mvnw clean package -DskipTests
-
-cd ../book-service
-./mvnw clean package -DskipTests
-
-# start.sh
-docker-compose -f docker-compose.yml -p bookswap-app up --build -d
-
-# stop.sh
-docker-compose -f docker-compose.yml -p bookswap-app down --remove-orphans
---------------------------------------------------
-workflow with docker swarm:
+-----------------------------------------------------
+workflow:
 
 # start cluster
 ./start-swarm.sh
@@ -24,7 +11,15 @@ workflow with docker swarm:
 docker stack ls
 docker stack services bookswap
 docker stack ps bookswap
---------------------------------------------------
+-----------------------------------------------------
+for every change in the project (especially backend):
+(github actions automatically builds and pushes
+the docker images to docker hub)
+
+git add .
+git commit -m "your commit message"
+git push origin main
+-----------------------------------------------------
 # pgAdmin - http://localhost:5050/
 
 Name	bookswap-app-db
@@ -33,7 +28,7 @@ Port	5432
 Maintenance DB	postgres
 Username	postgres
 Password	postgres
---------------------------------------------------
+-----------------------------------------------------
 # portainer - http://localhost:9000/
 
 a portainer agent running on every node
@@ -41,4 +36,4 @@ a single portainer ui container on the manager
 
 username: admin
 password: admin1234
---------------------------------------------------
+-----------------------------------------------------

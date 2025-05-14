@@ -31,7 +31,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
         String token = getJWTFromRequest(request);
 
-        // ✅ Skip filtering if no token present
+        // Skip filtering if no token present
         if (token == null || !tokenGenerator.validateToken(token)) {
             filterChain.doFilter(request, response);
             return;

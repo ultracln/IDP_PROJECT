@@ -16,6 +16,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.io.IOException;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,7 +35,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String token = getTokenFromRequest(request);
         if (token != null && validateToken(token)) {
-            String email = getEmailFromToken(token);  // <-- this is what was missing
+            String email = getEmailFromToken(token);
             List<SimpleGrantedAuthority> authorities = getAuthoritiesFromToken(token);
 
             UsernamePasswordAuthenticationToken auth =
@@ -54,23 +55,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
+            Jwts.parser()
+                    .setSigningKey(Base64.getDecoder().decode(jwtSecret))
+                    .parseClaimsJws(token);
             return true;
         } catch (Exception e) {
             return false;
         }
     }
 
+
     private Claims getClaims(String token) {
         return Jwts.parser()
-                .setSigningKey(jwtSecret)
+                .setSigningKey(Base64.getDecoder().decode(jwtSecret))
                 .parseClaimsJws(token)
                 .getBody();
     }
 
     private List<SimpleGrantedAuthority> getAuthoritiesFromToken(String token) {
         Claims claims = Jwts.parser()
-                .setSigningKey(jwtSecret)
+                .setSigningKey(Base64.getDecoder().decode(jwtSecret))
                 .parseClaimsJws(token)
                 .getBody();
 
@@ -84,7 +88,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private String getEmailFromToken(String token) {
         Claims claims = Jwts.parser()
-                .setSigningKey(jwtSecret)
+                .setSigningKey(Base64.getDecoder().decode(jwtSecret))
                 .parseClaimsJws(token)
                 .getBody();
         return claims.getSubject();

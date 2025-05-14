@@ -43,7 +43,7 @@ public class JwtGenerator {
                 .setSubject(username)
                 .claim("roles", roles)
                 .setIssuedAt(now)
-                .setIssuer("http://localhost:8081")
+                .setIssuer("bookswap-client")
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, key)
                 .compact();
@@ -51,7 +51,7 @@ public class JwtGenerator {
 
     public String getUsernameFromJWT(String token) {
         Claims claims = Jwts.parser()
-                .setSigningKey(jwtSecret)
+                .setSigningKey(Base64.getDecoder().decode(jwtSecret))
                 .parseClaimsJws(token)
                 .getBody();
         return claims.getSubject();
@@ -59,10 +59,13 @@ public class JwtGenerator {
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
+            Jwts.parser()
+                    .setSigningKey(Base64.getDecoder().decode(jwtSecret))
+                    .parseClaimsJws(token);
             return true;
         } catch (Exception ex) {
             throw new AuthenticationCredentialsNotFoundException("JWT was expired or incorrect");
         }
     }
+
 }

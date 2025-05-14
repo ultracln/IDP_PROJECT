@@ -29,7 +29,7 @@ services:
       replicas: 1
 
   auth-service:
-    image: bookswap/auth-service
+    image: ultracln/auth-service:latest
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://bookswap-app-db:5432/postgres
       SPRING_DATASOURCE_USERNAME: postgres
@@ -42,7 +42,7 @@ services:
       replicas: 1
 
   book-service:
-    image: bookswap/book-service
+    image: ultracln/book-service:latest
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://bookswap-app-db:5432/postgres
       SPRING_DATASOURCE_USERNAME: postgres
@@ -54,9 +54,34 @@ services:
     deploy:
       replicas: 1
 
+  kong:
+    image: kong:latest
+    volumes:
+      - ./kong:/usr/local/kong/declarative
+    environment:
+      KONG_DATABASE: 'off'
+      KONG_DECLARATIVE_CONFIG: /usr/local/kong/declarative/kong.yml
+      KONG_PROXY_ACCESS_LOG: /dev/stdout
+      KONG_ADMIN_ACCESS_LOG: /dev/stdout
+      KONG_PROXY_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_LISTEN: 0.0.0.0:8001, 0.0.0.0:8444 ssl
+    ports:
+      - 80:8000
+      - 443:8443
+      - 8001:8001
+      - 8444:8444
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    networks:
+      - bookswap-net
+
+
 volumes:
   pg_data:
 
 networks:
   bookswap-net:
     driver: overlay
+    attachable: true
