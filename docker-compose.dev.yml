@@ -1,0 +1,89 @@
+version: "3.8"
+
+services:
+
+  bookswap-app-db:
+    image: postgres:13.2-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - bookswap-net
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    networks:
+      - bookswap-net
+    deploy:
+      replicas: 1
+
+  auth-service:
+    build: ./auth-service
+    image: bookswap/auth-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://bookswap-app-db:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    ports:
+      - "8081:8081"
+    networks:
+      - bookswap-net
+    deploy:
+      replicas: 1
+
+  book-service:
+    build: ./book-service
+    image: bookswap/book-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://bookswap-app-db:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    ports:
+      - "8082:8082"
+    networks:
+      - bookswap-net
+    deploy:
+      replicas: 1
+
+  kong:
+    image: kong:latest
+    volumes:
+      - ./kong:/usr/local/kong/declarative
+    environment:
+      KONG_DATABASE: 'off'
+      KONG_DECLARATIVE_CONFIG: /usr/local/kong/declarative/kong.yml
+      KONG_PROXY_ACCESS_LOG: /dev/stdout
+      KONG_ADMIN_ACCESS_LOG: /dev/stdout
+      KONG_PROXY_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_LISTEN: 0.0.0.0:8001, 0.0.0.0:8444 ssl
+    ports:
+      - 80:8000
+      - 443:8443
+      - 8001:8001
+      - 8444:8444
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    networks:
+      - bookswap-net
+
+
+volumes:
+  pg_data:
+
+networks:
+  bookswap-net:
+    driver: overlay
+    attachable: true

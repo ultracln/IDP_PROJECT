@@ -16,6 +16,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
@@ -56,7 +57,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private boolean validateToken(String token) {
         try {
             Jwts.parser()
-                    .setSigningKey(Base64.getDecoder().decode(jwtSecret))
+                    .setSigningKey(jwtSecret.getBytes(StandardCharsets.UTF_8))
                     .parseClaimsJws(token);
             return true;
         } catch (Exception e) {
@@ -67,14 +68,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private Claims getClaims(String token) {
         return Jwts.parser()
-                .setSigningKey(Base64.getDecoder().decode(jwtSecret))
+                .setSigningKey(jwtSecret.getBytes(StandardCharsets.UTF_8))
                 .parseClaimsJws(token)
                 .getBody();
     }
 
     private List<SimpleGrantedAuthority> getAuthoritiesFromToken(String token) {
         Claims claims = Jwts.parser()
-                .setSigningKey(Base64.getDecoder().decode(jwtSecret))
+                .setSigningKey(jwtSecret.getBytes(StandardCharsets.UTF_8))
                 .parseClaimsJws(token)
                 .getBody();
 
@@ -88,7 +89,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private String getEmailFromToken(String token) {
         Claims claims = Jwts.parser()
-                .setSigningKey(Base64.getDecoder().decode(jwtSecret))
+                .setSigningKey(jwtSecret.getBytes(StandardCharsets.UTF_8))
                 .parseClaimsJws(token)
                 .getBody();
         return claims.getSubject();

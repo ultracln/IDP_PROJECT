@@ -26,11 +26,10 @@ jwt_secrets:
   - consumer: bookswap-client
     key: bookswap-client
     algorithm: HS512
-    secret: Vp47vXw3PVh7wEqmiT9EhK3Dfs4nVaG9W4g8UCZDWl+M3K7t4cKnVCR4Lvx3V8zEhR3A4P3ehFQsM5vU7cqA5g==
+    secret: bookswap-super-secret-key-must-be-at-least-64-characters-long!!!!
 
 plugins:
   - name: jwt
     service: book-service
     config:
       key_claim_name: iss
-      secret_is_base64: true

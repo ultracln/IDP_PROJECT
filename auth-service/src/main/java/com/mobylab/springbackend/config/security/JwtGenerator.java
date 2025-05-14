@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,7 +38,7 @@ public class JwtGenerator {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
 
-        SecretKey key = Keys.hmacShaKeyFor(Base64.getDecoder().decode(jwtSecret));
+        SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
 
         return Jwts.builder()
                 .setSubject(username)
@@ -51,7 +52,7 @@ public class JwtGenerator {
 
     public String getUsernameFromJWT(String token) {
         Claims claims = Jwts.parser()
-                .setSigningKey(Base64.getDecoder().decode(jwtSecret))
+                .setSigningKey(jwtSecret.getBytes(StandardCharsets.UTF_8))
                 .parseClaimsJws(token)
                 .getBody();
         return claims.getSubject();
@@ -60,12 +61,11 @@ public class JwtGenerator {
     public boolean validateToken(String token) {
         try {
             Jwts.parser()
-                    .setSigningKey(Base64.getDecoder().decode(jwtSecret))
+                    .setSigningKey(jwtSecret.getBytes(StandardCharsets.UTF_8))
                     .parseClaimsJws(token);
             return true;
         } catch (Exception ex) {
             throw new AuthenticationCredentialsNotFoundException("JWT was expired or incorrect");
         }
     }
-
 }

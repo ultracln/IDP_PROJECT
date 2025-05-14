@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: CI/CD Pipeline with Versioned Images
 
 on:
   push:
@@ -19,23 +19,29 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Build Auth Service with Maven
+      - name: Build Auth Service
         working-directory: ./auth-service
         run: mvn clean package -DskipTests
 
-      - name: Build Book Service with Maven
+      - name: Build Book Service
         working-directory: ./book-service
         run: mvn clean package -DskipTests
+
+      - name: Get short commit SHA
+        id: vars
+        run: echo "sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: Log in to Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-      - name: Build and Push Auth Service Image
+      - name: Build and Push Auth Service
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/auth-service:latest ./auth-service
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/auth-service:latest -t ${{ secrets.DOCKER_USERNAME }}/auth-service:${{ steps.vars.outputs.sha }} ./auth-service
           docker push ${{ secrets.DOCKER_USERNAME }}/auth-service:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/auth-service:${{ steps.vars.outputs.sha }}
 
-      - name: Build and Push Book Service Image
+      - name: Build and Push Book Service
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/book-service:latest ./book-service
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/book-service:latest -t ${{ secrets.DOCKER_USERNAME }}/book-service:${{ steps.vars.outputs.sha }} ./book-service
           docker push ${{ secrets.DOCKER_USERNAME }}/book-service:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/book-service:${{ steps.vars.outputs.sha }}
