@@ -12,6 +12,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 import java.security.Principal;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+
+// Swagger/OpenAPI imports
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @RestController
 @RequestMapping("/book")
@@ -32,11 +40,16 @@ public class BookController implements SecuredRestController {
         return ResponseEntity.status(200).body(bookDtoList);
     }
 
+
     @GetMapping("/all")
-    public ResponseEntity<List<BookWithOwnerDto>> getAllBooks() {
-        List<BookWithOwnerDto> books = bookService.getAllBooks();
+    public ResponseEntity<Page<BookWithOwnerDto>> getAllBooks(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+        Page<BookWithOwnerDto> books = bookService.getAllBooks(page, size);
         return ResponseEntity.ok(books);
     }
+
+
 
     @PostMapping("/addBook")
     @PreAuthorize("hasAuthority('ROLE_USER')")

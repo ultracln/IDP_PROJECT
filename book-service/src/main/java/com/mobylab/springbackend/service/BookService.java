@@ -14,7 +14,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Value;
-
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.Collections;
 import java.util.List;
@@ -22,6 +23,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageImpl;
 
 @Service
 @Transactional
@@ -121,13 +125,18 @@ public class BookService {
         return new BookWithOwnerDto()
                 .setTitle(book.getTitle())
                 .setAuthor(book.getAuthor())
-                .setOwnerEmail(authServiceClient.getUserEmailById(book.getOwnerId()));
+                .setOwnerEmail(authServiceClient.getUserEmailById(book.getOwnerId()))
+                .setOwnerUsername(authServiceClient.getUsernameById(book.getOwnerId()));
     }
 
-    public List<BookWithOwnerDto> getAllBooks() {
-        List<Book> books = bookRepository.findAll();
-        return books.stream()
+    public Page<BookWithOwnerDto> getAllBooks(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Book> bookPage = bookRepository.findAll(pageable);
+
+        List<BookWithOwnerDto> dtoList = bookPage.getContent().stream()
                 .map(this::mapToBookWithOwnerDto)
                 .toList();
+
+        return new PageImpl<>(dtoList, pageable, bookPage.getTotalElements());
     }
 }

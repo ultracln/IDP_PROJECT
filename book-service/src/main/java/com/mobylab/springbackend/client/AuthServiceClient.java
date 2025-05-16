@@ -43,6 +43,26 @@ public class AuthServiceClient {
         }
     }
 
+    public String getUsernameById(UUID userId) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Authorization", getCurrentToken());
+            HttpEntity<Void> entity = new HttpEntity<>(headers);
+
+            ResponseEntity<String> response = restTemplate.exchange(
+                    authServiceBaseUrl + "/api/v1/auth/users/" + userId + "/username",
+                    HttpMethod.GET,
+                    entity,
+                    String.class
+            );
+
+            return response.getBody();
+        } catch (Exception e) {
+            return "unknown_user";
+        }
+    }
+
+
     public String getUserEmailById(UUID userId) {
         try {
             HttpHeaders headers = new HttpHeaders();
