@@ -12,14 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 import java.security.Principal;
 import java.util.List;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-
-// Swagger/OpenAPI imports
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 @RestController
 @RequestMapping("/book")
@@ -40,15 +32,23 @@ public class BookController implements SecuredRestController {
         return ResponseEntity.status(200).body(bookDtoList);
     }
 
-
     @GetMapping("/all")
-    public ResponseEntity<Page<BookWithOwnerDto>> getAllBooks(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size) {
-        Page<BookWithOwnerDto> books = bookService.getAllBooks(page, size);
+    public ResponseEntity<List<BookWithOwnerDto>> getAllBooks() {
+        List<BookWithOwnerDto> books = bookService.getAllBooks();
         return ResponseEntity.ok(books);
     }
 
+    @PutMapping("/editBook/{id}")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public ResponseEntity<Book> editBook(@PathVariable UUID id, @RequestBody BookDto bookDto, Principal principal) {
+        String email = principal.getName();
+        Book updatedBook = bookService.editBook(id, bookDto, email);
+        if (updatedBook != null) {
+            return ResponseEntity.ok(updatedBook);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
 
 
     @PostMapping("/addBook")

@@ -14,8 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
+
 
 import java.util.Collections;
 import java.util.List;
@@ -23,9 +22,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.UUID;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.PageImpl;
 
 @Service
 @Transactional
@@ -97,6 +93,32 @@ public class BookService {
         return false;
     }
 
+    public Book editBook(UUID bookId, BookDto bookDto, String email) {
+        UUID userId = authServiceClient.getUserIdByEmail(email);
+        Optional<Book> bookOpt = bookRepository.findById(bookId);
+
+
+        Book book = bookOpt.get();
+
+
+        Optional<List<Book>> existingBooks = bookRepository.getBooksByTitle(bookDto.getTitle());
+        if (existingBooks.isPresent()) {
+            boolean alreadyExists = existingBooks.get().stream().anyMatch(b ->
+                    !b.getId().equals(bookId) &&
+                    b.getAuthor().equalsIgnoreCase(bookDto.getAuthor()) &&
+                    b.getOwnerId().equals(userId)
+            );
+            if (alreadyExists) {
+                throw new BookAlreadyExistsException("This book already exists for the user.");
+            }
+        }
+
+        book.setTitle(bookDto.getTitle());
+        book.setAuthor(bookDto.getAuthor());
+        return bookRepository.save(book);
+    }
+
+
     public boolean deleteBookById(UUID bookId) {
         Optional<Book> bookOpt = bookRepository.findById(bookId);
         if (bookOpt.isPresent()) {
@@ -125,18 +147,13 @@ public class BookService {
         return new BookWithOwnerDto()
                 .setTitle(book.getTitle())
                 .setAuthor(book.getAuthor())
-                .setOwnerEmail(authServiceClient.getUserEmailById(book.getOwnerId()))
-                .setOwnerUsername(authServiceClient.getUsernameById(book.getOwnerId()));
+                .setOwnerEmail(authServiceClient.getUserEmailById(book.getOwnerId()));
     }
 
-    public Page<BookWithOwnerDto> getAllBooks(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Book> bookPage = bookRepository.findAll(pageable);
-
-        List<BookWithOwnerDto> dtoList = bookPage.getContent().stream()
+    public List<BookWithOwnerDto> getAllBooks() {
+        List<Book> books = bookRepository.findAll();
+        return books.stream()
                 .map(this::mapToBookWithOwnerDto)
                 .toList();
-
-        return new PageImpl<>(dtoList, pageable, bookPage.getTotalElements());
     }
 }
