@@ -1,6 +1,9 @@
 package com.mobylab.springbackend.repository;
 
 import com.mobylab.springbackend.entity.Book;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,5 +17,6 @@ public interface BookRepository extends JpaRepository<Book, UUID> {
 
     Optional<List<Book>> getBooksByAuthor(String author);
     Optional<List<Book>> getBooksByTitle(String title);
+    Page<Book> findByAuthorIgnoreCaseContaining(String author, Pageable pageable);
 
 }

@@ -14,6 +14,7 @@ import java.security.Principal;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 // Swagger/OpenAPI imports
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,20 +33,30 @@ public class BookController implements SecuredRestController {
     }
 
     @GetMapping("/getByAuthor")
-    public ResponseEntity<List<BookWithOwnerDto>> getBooksByAuthor(String author){
-        List<BookWithOwnerDto> bookDtoList = bookService.getBooksByAuthor(author);
-        if (bookDtoList.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    public ResponseEntity<Page<BookWithOwnerDto>> getBooksByAuthor(
+            @RequestParam String author,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        
+        Pageable pageable = PageRequest.of(page, size);
+        Page<BookWithOwnerDto> books = bookService.getBooksByAuthor(author, pageable);
+
+        if (books.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Page.empty());
         }
-        return ResponseEntity.status(200).body(bookDtoList);
+
+        return ResponseEntity.ok(books);
     }
+
 
 
     @GetMapping("/all")
     public ResponseEntity<Page<BookWithOwnerDto>> getAllBooks(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size) {
-        Page<BookWithOwnerDto> books = bookService.getAllBooks(page, size);
+            @RequestParam(defaultValue = "5") int size
+            ) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<BookWithOwnerDto> books = bookService.getAllBooks(pageable);
         return ResponseEntity.ok(books);
     }
 

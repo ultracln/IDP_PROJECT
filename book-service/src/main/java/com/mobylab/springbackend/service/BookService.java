@@ -41,16 +41,27 @@ public class BookService {
         this.authServiceClient = authServiceClient;
     }
 
-    public List<BookWithOwnerDto> getBooksByAuthor(String author) {
-        List<Book> books = bookRepository.getBooksByAuthor(author).orElse(Collections.emptyList());
+    // public List<BookWithOwnerDto> getBooksByAuthor(String author) {
+    //     List<Book> books = bookRepository.getBooksByAuthor(author).orElse(Collections.emptyList());
 
-        return books.stream()
-                .map(book -> new BookWithOwnerDto()
-                        .setAuthor(book.getAuthor())
-                        .setTitle(book.getTitle())
-                        .setOwnerEmail(authServiceClient.getUserEmailById(book.getOwnerId())))
-                .collect(Collectors.toList());
-    }
+    //     return books.stream()
+    //             .map(book -> new BookWithOwnerDto()
+    //                     .setAuthor(book.getAuthor())
+    //                     .setTitle(book.getTitle())
+    //                     .setOwnerEmail(authServiceClient.getUserEmailById(book.getOwnerId())))
+    //             .collect(Collectors.toList());
+    // }
+
+    public Page<BookWithOwnerDto> getBooksByAuthor(String author, Pageable pageable) {
+    return bookRepository.findByAuthorIgnoreCaseContaining(author, pageable)
+        .map(book -> new BookWithOwnerDto()
+            .setTitle(book.getTitle())
+            .setAuthor(book.getAuthor())
+                .setOwnerEmail(authServiceClient.getUserEmailById(book.getOwnerId()))
+                .setOwnerUsername(authServiceClient.getUsernameById(book.getOwnerId())));
+}
+
+
 
     public Book addBook(BookDto bookDto, String email) {
         UUID userId = authServiceClient.getUserIdByEmail(email);
@@ -129,8 +140,7 @@ public class BookService {
                 .setOwnerUsername(authServiceClient.getUsernameById(book.getOwnerId()));
     }
 
-    public Page<BookWithOwnerDto> getAllBooks(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+    public Page<BookWithOwnerDto> getAllBooks(Pageable pageable) {
         Page<Book> bookPage = bookRepository.findAll(pageable);
 
         List<BookWithOwnerDto> dtoList = bookPage.getContent().stream()
@@ -139,4 +149,5 @@ public class BookService {
 
         return new PageImpl<>(dtoList, pageable, bookPage.getTotalElements());
     }
+    
 }
