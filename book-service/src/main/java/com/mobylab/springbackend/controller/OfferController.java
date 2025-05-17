@@ -55,7 +55,7 @@ public class OfferController implements SecuredRestController {
 
         String senderEmail = principal.getName();
         UUID senderId = authServiceClient.getUserIdByEmail(senderEmail);
-        UUID receiverId = UUID.fromString(dto.getReceiverId());
+        UUID receiverId = authServiceClient.getUserIdByEmail(dto.getReceiverEmail());
 
         return offerService.createFromAuthenticatedUser(dto, senderId, receiverId);
     }

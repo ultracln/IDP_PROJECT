@@ -9,15 +9,15 @@ public class CreateOfferFromContextDto {
     private List<String> offeredBookTitles;
     private List<String> requestedBookTitles;
 
-    private String receiverId;
+    // private String receiverId;
 
-    public String getReceiverId() {
-        return receiverId;
-    }
+    // public String getReceiverId() {
+    //     return receiverId;
+    // }
 
-    public void setReceiverId(String receiverId) {
-        this.receiverId = receiverId;
-    }
+    // public void setReceiverId(String receiverId) {
+    //     this.receiverId = receiverId;
+    // }
 
     public List<String> getRequestedBookTitles() {
         return requestedBookTitles;
