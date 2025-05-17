@@ -14,3 +14,6 @@ docker stack deploy -c docker-compose.dev.yml bookswap
 
 echo "Deploying Portainer stack..."
 docker stack deploy -c portainer-stack.yml portainer
+
+echo "Deploying Monitoring stack..."
+docker stack deploy -c prometheus-stack.yml monitoring

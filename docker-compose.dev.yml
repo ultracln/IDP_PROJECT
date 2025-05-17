@@ -77,36 +77,9 @@ services:
     networks:
       - bookswap-net
 
-  prometheus:
-    image: prom/prometheus:latest
-    volumes:
-      - ./prometheus:/etc/prometheus
-    command:
-      - --config.file=/etc/prometheus/prometheus.yml
-    ports:
-      - "9090:9090"
-    networks:
-      - bookswap-net
-    deploy:
-      placement:
-        constraints: [node.role == manager]
-
-  grafana:
-    image: grafana/grafana:latest
-    ports:
-      - "3000:3000"
-    networks:
-      - bookswap-net
-    deploy:
-      placement:
-        constraints: [node.role == manager]
-
-
-
 volumes:
   pg_data:
 
 networks:
   bookswap-net:
-    driver: overlay
-    attachable: true
+    external: true
