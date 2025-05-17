@@ -49,7 +49,8 @@ public class SecurityConfiguration {
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
-                                "/book/getByAuthor"
+                                "/book/getByAuthor",
+                                "/actuator/prometheus"
                         ).permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(authEntryPoint))
