@@ -35,6 +35,7 @@ public class OfferController implements SecuredRestController {
     }
 
     @GetMapping("/offers")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<List<OfferDto>> getOffers() {
         return ResponseEntity.ok(offerService.getAllOffers());
     }
