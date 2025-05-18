@@ -41,10 +41,11 @@ public class BookService {
         List<Book> books = bookRepository.getBooksByAuthor(author).orElse(Collections.emptyList());
 
         return books.stream()
-                .map(book -> new BookWithOwnerDto()
+                .<BookWithOwnerDto>map(book -> new BookWithOwnerDto()
                         .setAuthor(book.getAuthor())
                         .setTitle(book.getTitle())
-                        .setOwnerEmail(authServiceClient.getUserEmailById(book.getOwnerId())))
+                        .setOwnerEmail(authServiceClient.getUserEmailById(book.getOwnerId()))
+                        .setOwnerUsername(authServiceClient.getUsernameById(book.getOwnerId())))
                 .collect(Collectors.toList());
     }
 
@@ -147,7 +148,8 @@ public class BookService {
         return new BookWithOwnerDto()
                 .setTitle(book.getTitle())
                 .setAuthor(book.getAuthor())
-                .setOwnerEmail(authServiceClient.getUserEmailById(book.getOwnerId()));
+                .setOwnerEmail(authServiceClient.getUserEmailById(book.getOwnerId()))
+                .setOwnerUsername(authServiceClient.getUsernameById(book.getOwnerId()));
     }
 
     public List<BookWithOwnerDto> getAllBooks() {

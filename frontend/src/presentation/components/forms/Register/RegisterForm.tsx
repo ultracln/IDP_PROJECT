@@ -27,24 +27,24 @@ export const RegisterForm = () => {
                         <div className="col-span-2">
                             <FormControl
                                 fullWidth
-                                error={!isUndefined(state.errors.name)}
+                                error={!isUndefined(state.errors.username)}
                             >
                                 <FormLabel required>
-                                    <FormattedMessage id="globals.name" />
+                                    <FormattedMessage id="globals.username" />
                                 </FormLabel>
                                 <OutlinedInput
-                                    {...actions.register("name")}
+                                    {...actions.register("username")}
                                     placeholder={formatMessage(
                                         { id: "globals.placeholders.textInput" },
                                         {
                                             fieldName: formatMessage({
-                                                id: "globals.name",
+                                                id: "globals.username",
                                             }),
                                         })}
-                                    autoComplete="name"
+                                    autoComplete="username"
                                 />
-                                <FormHelperText hidden={isUndefined(state.errors.name)}>
-                                    {state.errors.name?.message}
+                                <FormHelperText hidden={isUndefined(state.errors.username)}>
+                                    {state.errors.username?.message}
                                 </FormHelperText>
                             </FormControl>
                         </div>

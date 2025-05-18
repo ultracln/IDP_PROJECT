@@ -7,7 +7,7 @@ import {
 } from "react-hook-form";
 
 export type RegisterFormModel = {
-    name: string;
+    username: string;
     email: string;
     password: string;
 };

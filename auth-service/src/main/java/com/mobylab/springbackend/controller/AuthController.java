@@ -77,7 +77,12 @@ public class AuthController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-
+    @GetMapping("/users/{id}/username")
+    public ResponseEntity<String> getUsernameById(@PathVariable UUID id) {
+        Optional<User> userOpt = userRepository.findById(id);
+        return userOpt.map(user -> ResponseEntity.ok(user.getUsername()))
+                .orElse(ResponseEntity.notFound().build());
+    }
 
 //    @SecurityRequirement(name = "Bearer Authentication")
 //    @RequestMapping(path ="/token", method = RequestMethod.GET)

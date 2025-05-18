@@ -16,10 +16,10 @@ import {
     Configuration
 } from "../../../../api/api8081";
 
-const getDefaultValues = (initialData?: { email: string; name: string }) => {
+const getDefaultValues = (initialData?: { email: string; username: string }) => {
     const defaultValues = {
         email: "",
-        name: "",
+        username: "",
         password: ""
     };
 
@@ -46,13 +46,13 @@ const useInitRegisterForm = () => {
                 }))
             .email()
             .default(defaultValues.email),
-        name: yup.string()
+        username: yup.string()
             .required(formatMessage(
                 { id: "globals.validations.requiredField" },
                 {
-                    fieldName: formatMessage({ id: "globals.name" }),
+                    fieldName: formatMessage({ id: "globals.username" }),
                 }))
-            .default(defaultValues.name),
+            .default(defaultValues.username),
         password: yup.string()
             .required(formatMessage(
                 { id: "globals.validations.requiredField" },
