@@ -13,7 +13,6 @@ import { toast } from "react-toastify";
 import {
     AuthControllerApi,
     RegisterDto,
-    LoginResponseDto,
     Configuration
 } from "../../../../api/api8081";
 

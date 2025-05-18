@@ -8,7 +8,6 @@ import {
     BookControllerApi,
     BookWithOwnerDto,
     Configuration,
-    GetAllBooksRequest,
     GetBooksByAuthorRequest
 } from "../../../../../api/api8082";
 
@@ -46,22 +45,13 @@ export default function BookTable() {
     const [error, setError] = useState<string | null>(null);
 
     // 🔁 Obține toate cărțile cu paginare
-    const fetchBooks = async (pageNumber = 0, size = rowsPerPage) => {
+    const fetchBooks = async () => {
         setLoading(true);
         setError(null);
         try {
-            const request: GetAllBooksRequest = {
-                page: pageNumber,
-                size: size
-            };
-            const response = await bookApi.getAllBooks(request);
-            if (response && Array.isArray(response.content)) {
-                setBooks(response.content);
-                setTotalCount(response.totalElements || 0);
-            } else {
-                setBooks([]);
-                setTotalCount(0);
-            }
+            const response = await bookApi.getAllBooks();
+            setBooks(response);
+            setTotalCount(response.length);
         } catch (err: any) {
             console.error('Error fetching books:', err);
             setError(err.message || "Failed to fetch books.");
@@ -74,7 +64,7 @@ export default function BookTable() {
 
     const fetchBooksByAuthor = async (author: string) => {
         if (!author) {
-            fetchBooks(0);
+            fetchBooks();
             return;
         }
 
@@ -85,13 +75,8 @@ export default function BookTable() {
                 author: author
             };
             const response = await bookApi.getBooksByAuthor(request);
-            if (response && Array.isArray(response.content)) {
-                setBooks(response.content);
-                setTotalCount(response.totalElements || 0);
-            } else {
-                setBooks([]);
-                setTotalCount(0);
-            }
+            setBooks(response);
+            setTotalCount(response.length);
             setPage(0);
         } catch (err: any) {
             console.error('Error searching by author:', err);
@@ -104,7 +89,7 @@ export default function BookTable() {
     };
 
     useEffect(() => {
-        fetchBooks(page, rowsPerPage);
+        fetchBooks();
     }, [page, rowsPerPage]);
 
     const handleChangePage = (_: unknown, newPage: number) => {
@@ -117,12 +102,15 @@ export default function BookTable() {
         setPage(0);
     };
 
+    // Since we don't have server-side pagination, we'll slice the data client-side
+    const displayedBooks = books.slice(page * rowsPerPage, (page + 1) * rowsPerPage);
+
     return (
         <>
             <BookSearch onSearch={fetchBooksByAuthor} />
             <Button 
                 variant="outlined" 
-                onClick={() => fetchBooks(0)} 
+                onClick={() => fetchBooks()} 
                 style={{ marginBottom: 16 }}
                 disabled={loading}
             >
@@ -152,8 +140,8 @@ export default function BookTable() {
                                     Loading...
                                 </TableCell>
                             </TableRow>
-                        ) : books.length > 0 ? (
-                            books.map((book, index) => (
+                        ) : displayedBooks.length > 0 ? (
+                            displayedBooks.map((book, index) => (
                                 <TableRow key={index}>
                                     <TableCell>{book.title}</TableCell>
                                     <TableCell>{book.author}</TableCell>

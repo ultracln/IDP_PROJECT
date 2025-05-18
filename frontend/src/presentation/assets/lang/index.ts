@@ -6,12 +6,28 @@ export enum SupportedLanguage {
   RO = "ro",
 }
 
-type ReactIntlMessages = {
-  en: Record<string, string>;
-  ro: Record<string, string>;
+type NestedRecord = {
+  [key: string]: string | NestedRecord;
 };
 
-const messages: ReactIntlMessages = {
+type FlattenedMessages = Record<string, string>;
+
+function flattenMessages(nestedMessages: NestedRecord, prefix = ''): FlattenedMessages {
+  return Object.keys(nestedMessages).reduce((messages: FlattenedMessages, key) => {
+    const value = nestedMessages[key];
+    const prefixedKey = prefix ? `${prefix}.${key}` : key;
+
+    if (typeof value === 'string') {
+      messages[prefixedKey] = value;
+    } else {
+      Object.assign(messages, flattenMessages(value, prefixedKey));
+    }
+
+    return messages;
+  }, {});
+}
+
+const messages = {
   en,
   ro,
 };
@@ -19,5 +35,5 @@ const messages: ReactIntlMessages = {
 /**
  * Add any message IDs in its corresponding JSON file for each language to be used here to replace it with the translation via this function.
  */
-export const getMessagesForLanguage = (language: SupportedLanguage) =>
-  messages[language];
+export const getMessagesForLanguage = (language: SupportedLanguage): FlattenedMessages =>
+  flattenMessages(messages[language]);

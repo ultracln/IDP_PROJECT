@@ -14,10 +14,12 @@ import { toast } from "react-toastify";
 import {
   AuthControllerApi,
   LoginDto,
-  LoginResponseDto,
   Configuration
-
 } from "../../../../api/api8081";
+
+interface LoginResponse {
+    access_token: string;
+}
 
 const getDefaultValues = (initialData?: { email: string }) => {
     const defaultValues = {
@@ -78,14 +80,13 @@ export const useLoginFormController = (): LoginFormController => {
     const { redirectToHome } = useAppRouter();
     const queryClient = useQueryClient();
     const dispatch = useAppDispatch();
-    type LoginResult = { token: string };
 
     const submit = useCallback(async (data: LoginFormModel) => {
         const configuration = new Configuration({ basePath: "http://localhost:8081" });
         const api = new AuthControllerApi(configuration);
 
         try {
-            const result = await api.login({ loginDto: data }) as LoginResponseDto;
+            const result = await api.login({ loginDto: data }) as LoginResponse;
             const token: string | undefined = result?.access_token;
 
             if (token && token.split(".").length === 3) {

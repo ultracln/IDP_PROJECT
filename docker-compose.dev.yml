@@ -54,6 +54,15 @@ services:
     deploy:
       replicas: 1
 
+  frontend:
+    image: bookswap/frontend
+    ports:
+      - "3001:80"
+    networks:
+      - bookswap-net
+    deploy:
+      replicas: 1
+
   kong:
     image: kong:latest
     volumes:

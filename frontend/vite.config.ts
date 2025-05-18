@@ -17,7 +17,7 @@ export default defineConfig({
   ],
   base: "/",
   server: {
-    port: 3000,
+    port: 3001,
     hmr: {
       protocol: "ws",
     },
@@ -26,7 +26,8 @@ export default defineConfig({
     globals: true,
     environment: "jsdom",
     coverage: {
-      reporter: ["none"],
+      provider: 'v8',
+      reporter: ['none'],
     },
   },
 });
