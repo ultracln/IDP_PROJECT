@@ -3,6 +3,7 @@
 echo "Pulling latest Docker images..."
 docker pull ultracln/auth-service:latest
 docker pull ultracln/book-service:latest
+docker pull ultracln/frontend:latest
 
 echo "Deploying stack to Docker Swarm..."
 docker stack deploy -c docker-compose.prod.yml bookswap
