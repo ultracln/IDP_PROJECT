@@ -4,6 +4,7 @@ public class BookWithOwnerDto {
     private String title;
     private String author;
     private String ownerEmail;
+    private String ownerUsername;
 
     public String getTitle() { return title; }
     public BookWithOwnerDto setTitle(String title) {
@@ -20,6 +21,11 @@ public class BookWithOwnerDto {
     public String getOwnerEmail() { return ownerEmail; }
     public BookWithOwnerDto setOwnerEmail(String ownerEmail) {
         this.ownerEmail = ownerEmail;
+        return this;
+    }
+    public String getOwnerUsername() { return ownerUsername; }
+    public BookWithOwnerDto setOwnerUsername(String ownerUsername) {
+        this.ownerUsername = ownerUsername;
         return this;
     }
 }

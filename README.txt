@@ -53,6 +53,7 @@ a single portainer ui container on the manager
 
 username: admin
 password: admin1234
+
 ----------------------------------------------------------------------
 PROMETHEUS - http://localhost:9090/
 
@@ -67,6 +68,12 @@ password: admin
 
 import dashboard -> 1860 (node exporter)  -> http://prometheus:9090
                  -> 4701 (jvm micrometer) -> http://prometheus:9090
+----------------------------------------------------------------------
+FRONTEND - http://localhost:3000/
+
+cd frontend/
+npm install
+npm run dev
 ----------------------------------------------------------------------
 ENDPOINTS:
 - auth-service:

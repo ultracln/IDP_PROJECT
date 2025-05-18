@@ -38,6 +38,19 @@ public class BookController implements SecuredRestController {
         return ResponseEntity.ok(books);
     }
 
+    @PutMapping("/editBook/{id}")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public ResponseEntity<Book> editBook(@PathVariable UUID id, @RequestBody BookDto bookDto, Principal principal) {
+        String email = principal.getName();
+        Book updatedBook = bookService.editBook(id, bookDto, email);
+        if (updatedBook != null) {
+            return ResponseEntity.ok(updatedBook);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+
     @PostMapping("/addBook")
     @PreAuthorize("hasAuthority('ROLE_USER')")
     public ResponseEntity<Book> addBook(@RequestBody BookDto bookDto, Principal principal) {

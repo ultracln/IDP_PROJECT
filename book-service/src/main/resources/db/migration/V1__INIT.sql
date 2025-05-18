@@ -57,6 +57,19 @@ CREATE TABLE IF NOT EXISTS offered_book (
     FOREIGN KEY (book_id) REFERENCES project.book(id)
     );
 
+
+CREATE SCHEMA IF NOT EXISTS project;
+
+-- Create feedback table
+CREATE TABLE project.feedback (
+    id BIGSERIAL PRIMARY KEY,
+    title VARCHAR(255),
+    category VARCHAR(255),
+    satisfaction VARCHAR(255),
+    subscribe BOOLEAN,
+    message VARCHAR(2000)
+); 
+
 -- CREATE TABLE IF NOT EXISTS requested_book (
 --                                               id UUID PRIMARY KEY,
 --                                               offer_id UUID NOT NULL,

@@ -1,0 +1,48 @@
+{
+    "globals.welcome": "Bine ati venit!",
+    "globals.login": "Autentificare",
+    "globals.logout": "Iesire",
+    "globals.submit": "Trimite",
+    "globals.email": "E-mail",
+    "globals.password": "Parola",
+    "globals.refresh": "Reincarca",
+    "globals.loadingFailed": "Incarcarea a esaut",
+    "globals.loading": "Se incarca",
+    "globals.users": "Utilizatori",
+    "globals.files": "Fisiere",
+    "globals.name": "Nume",
+    "globals.role": "Rol",
+    "globals.admin": "Administrator",
+    "globals.client": "Client",
+    "globals.personnel": "Personal",
+    "globals.description": "Descriere",
+    "globals.addBy": "Adaugat de", 
+    "globals.createdAt": "Creat la",
+    "globals.file": "Fisier",
+    "globals.placeholders.textInput": "Va rugam sa introduceti {fieldName}",
+    "globals.placeholders.selectInput": "Va rugam sa selectati {fieldName}",
+    "globals.validations.requiredField": "{fieldName} este camp obligatoriu!",
+    "globals.register": "Inregistrare",
+    "globals.validations.passwordMinLength": "Parola trebuie sa aiba cel putin 6 caractere",
+    "globals.book": "Carte",
+    "globals.books": "Carti",
+    "globals.bookTitle": "Titlu carte",
+    "globals.bookAuthor": "Autor carte",
+    "globals.allBooks": "Toate cartile",
+    "globals.myBooks": "Cartile mele",
+    "globals.feedback": "Feedback",
+    
+    "notifications": {
+        "messages": {
+            "registrationSuccess": "Înregistrare reușită!",
+            "authenticationSuccess": "Autentificare reușită!"
+        },
+        "errors": {
+            "registrationFailed": "Eroare la înregistrare",
+            "authenticationFailed": "Eroare la autentificare",
+            "invalidToken": "Token invalid"
+        }
+    }
+    
+
+}

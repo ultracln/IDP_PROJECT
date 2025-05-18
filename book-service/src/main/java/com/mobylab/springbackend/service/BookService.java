@@ -93,6 +93,32 @@ public class BookService {
         return false;
     }
 
+    public Book editBook(UUID bookId, BookDto bookDto, String email) {
+        UUID userId = authServiceClient.getUserIdByEmail(email);
+        Optional<Book> bookOpt = bookRepository.findById(bookId);
+
+
+        Book book = bookOpt.get();
+
+
+        Optional<List<Book>> existingBooks = bookRepository.getBooksByTitle(bookDto.getTitle());
+        if (existingBooks.isPresent()) {
+            boolean alreadyExists = existingBooks.get().stream().anyMatch(b ->
+                    !b.getId().equals(bookId) &&
+                    b.getAuthor().equalsIgnoreCase(bookDto.getAuthor()) &&
+                    b.getOwnerId().equals(userId)
+            );
+            if (alreadyExists) {
+                throw new BookAlreadyExistsException("This book already exists for the user.");
+            }
+        }
+
+        book.setTitle(bookDto.getTitle());
+        book.setAuthor(bookDto.getAuthor());
+        return bookRepository.save(book);
+    }
+
+
     public boolean deleteBookById(UUID bookId) {
         Optional<Book> bookOpt = bookRepository.findById(bookId);
         if (bookOpt.isPresent()) {

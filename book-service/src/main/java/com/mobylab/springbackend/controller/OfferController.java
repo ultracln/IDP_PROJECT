@@ -35,6 +35,7 @@ public class OfferController implements SecuredRestController {
     }
 
     @GetMapping("/offers")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<List<OfferDto>> getOffers() {
         return ResponseEntity.ok(offerService.getAllOffers());
     }
@@ -55,7 +56,7 @@ public class OfferController implements SecuredRestController {
 
         String senderEmail = principal.getName();
         UUID senderId = authServiceClient.getUserIdByEmail(senderEmail);
-        UUID receiverId = UUID.fromString(dto.getReceiverId());
+        UUID receiverId = authServiceClient.getUserIdByEmail(dto.getReceiverEmail());
 
         return offerService.createFromAuthenticatedUser(dto, senderId, receiverId);
     }

@@ -1,0 +1,14 @@
+apis/BookControllerApi.ts
+apis/FeedbackControllerApi.ts
+apis/OfferControllerApi.ts
+apis/index.ts
+index.ts
+models/Book.ts
+models/BookDto.ts
+models/BookWithOwnerDto.ts
+models/CreateOfferFromContextDto.ts
+models/FeedbackRequestDTO.ts
+models/FeedbackResponseDTO.ts
+models/OfferDto.ts
+models/index.ts
+runtime.ts
