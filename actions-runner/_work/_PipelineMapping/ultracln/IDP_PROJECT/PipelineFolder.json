@@ -1,0 +1,12 @@
+﻿{
+  "repositoryName": "ultracln/IDP_PROJECT",
+  "pipelineDirectory": "IDP_PROJECT",
+  "workspaceDirectory": "IDP_PROJECT\\IDP_PROJECT",
+  "repositories": {
+    "ultracln/IDP_PROJECT": {
+      "repositoryPath": "IDP_PROJECT\\IDP_PROJECT",
+      "lastRunOn": "05/18/2025 15:18:28 +03:00"
+    }
+  },
+  "lastRunOn": "05/18/2025 15:21:42 +03:00"
+}

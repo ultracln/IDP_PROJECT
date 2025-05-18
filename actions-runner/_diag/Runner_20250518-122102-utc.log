@@ -1,0 +1,198 @@
+[2025-05-18 12:21:02Z INFO HostContext] No proxy settings were found based on environmental variables (http_proxy/https_proxy/HTTP_PROXY/HTTPS_PROXY)
+[2025-05-18 12:21:02Z INFO HostContext] Well known directory 'Bin': 'D:\facultate\idp\IDP_PROJECT\actions-runner\bin'
+[2025-05-18 12:21:02Z INFO HostContext] Well known directory 'Root': 'D:\facultate\idp\IDP_PROJECT\actions-runner'
+[2025-05-18 12:21:02Z INFO HostContext] Well known config file 'Credentials': 'D:\facultate\idp\IDP_PROJECT\actions-runner\.credentials'
+[2025-05-18 12:21:02Z INFO HostContext] Well known directory 'Bin': 'D:\facultate\idp\IDP_PROJECT\actions-runner\bin'
+[2025-05-18 12:21:02Z INFO HostContext] Well known directory 'Root': 'D:\facultate\idp\IDP_PROJECT\actions-runner'
+[2025-05-18 12:21:02Z INFO HostContext] Well known config file 'Runner': 'D:\facultate\idp\IDP_PROJECT\actions-runner\.runner'
+[2025-05-18 12:21:02Z INFO Listener] Runner is built for Windows (X64) - win-x64.
+[2025-05-18 12:21:02Z INFO Listener] RuntimeInformation: Microsoft Windows 10.0.26100.
+[2025-05-18 12:21:02Z INFO Listener] Version: 2.324.0
+[2025-05-18 12:21:02Z INFO Listener] Commit: da3412efd49b1cf1a0fbdcbcee4e4ac4cc2177c8
+[2025-05-18 12:21:02Z INFO Listener] Culture: en-150
+[2025-05-18 12:21:02Z INFO Listener] UI Culture: en-US
+[2025-05-18 12:21:02Z INFO HostContext] Well known directory 'Bin': 'D:\facultate\idp\IDP_PROJECT\actions-runner\bin'
+[2025-05-18 12:21:02Z INFO HostContext] Well known directory 'Root': 'D:\facultate\idp\IDP_PROJECT\actions-runner'
+[2025-05-18 12:21:02Z INFO Listener] Validating directory permissions for: 'D:\facultate\idp\IDP_PROJECT\actions-runner'
+[2025-05-18 12:21:02Z INFO CommandLineParser] Parse
+[2025-05-18 12:21:02Z INFO CommandLineParser] Parsing 1 args
+[2025-05-18 12:21:02Z INFO CommandLineParser] parsing argument
+[2025-05-18 12:21:02Z INFO CommandLineParser] HasArgs: False
+[2025-05-18 12:21:02Z INFO CommandLineParser] Adding Command: run
+[2025-05-18 12:21:02Z INFO Listener] Arguments parsed
+[2025-05-18 12:21:02Z INFO Runner] ExecuteCommand
+[2025-05-18 12:21:02Z INFO ConfigurationStore] currentAssemblyLocation: D:\facultate\idp\IDP_PROJECT\actions-runner\bin\Runner.Listener.dll
+[2025-05-18 12:21:02Z INFO HostContext] Well known directory 'Bin': 'D:\facultate\idp\IDP_PROJECT\actions-runner\bin'
+[2025-05-18 12:21:02Z INFO ConfigurationStore] binPath: D:\facultate\idp\IDP_PROJECT\actions-runner\bin
+[2025-05-18 12:21:02Z INFO HostContext] Well known directory 'Bin': 'D:\facultate\idp\IDP_PROJECT\actions-runner\bin'
+[2025-05-18 12:21:02Z INFO HostContext] Well known directory 'Root': 'D:\facultate\idp\IDP_PROJECT\actions-runner'
+[2025-05-18 12:21:02Z INFO ConfigurationStore] RootFolder: D:\facultate\idp\IDP_PROJECT\actions-runner
+[2025-05-18 12:21:02Z INFO HostContext] Well known directory 'Bin': 'D:\facultate\idp\IDP_PROJECT\actions-runner\bin'
+[2025-05-18 12:21:02Z INFO HostContext] Well known directory 'Root': 'D:\facultate\idp\IDP_PROJECT\actions-runner'
+[2025-05-18 12:21:02Z INFO HostContext] Well known config file 'Runner': 'D:\facultate\idp\IDP_PROJECT\actions-runner\.runner'
+[2025-05-18 12:21:02Z INFO ConfigurationStore] ConfigFilePath: D:\facultate\idp\IDP_PROJECT\actions-runner\.runner
+[2025-05-18 12:21:02Z INFO HostContext] Well known directory 'Bin': 'D:\facultate\idp\IDP_PROJECT\actions-runner\bin'
+[2025-05-18 12:21:02Z INFO HostContext] Well known directory 'Root': 'D:\facultate\idp\IDP_PROJECT\actions-runner'
+[2025-05-18 12:21:02Z INFO HostContext] Well known config file 'MigratedRunner': 'D:\facultate\idp\IDP_PROJECT\actions-runner\.runner_migrated'
+[2025-05-18 12:21:02Z INFO ConfigurationStore] MigratedConfigFilePath: D:\facultate\idp\IDP_PROJECT\actions-runner\.runner_migrated
+[2025-05-18 12:21:02Z INFO HostContext] Well known directory 'Bin': 'D:\facultate\idp\IDP_PROJECT\actions-runner\bin'
+[2025-05-18 12:21:02Z INFO HostContext] Well known directory 'Root': 'D:\facultate\idp\IDP_PROJECT\actions-runner'
+[2025-05-18 12:21:02Z INFO HostContext] Well known config file 'Credentials': 'D:\facultate\idp\IDP_PROJECT\actions-runner\.credentials'
+[2025-05-18 12:21:02Z INFO ConfigurationStore] CredFilePath: D:\facultate\idp\IDP_PROJECT\actions-runner\.credentials
+[2025-05-18 12:21:02Z INFO HostContext] Well known directory 'Bin': 'D:\facultate\idp\IDP_PROJECT\actions-runner\bin'
+[2025-05-18 12:21:02Z INFO HostContext] Well known directory 'Root': 'D:\facultate\idp\IDP_PROJECT\actions-runner'
+[2025-05-18 12:21:02Z INFO HostContext] Well known config file 'MigratedCredentials': 'D:\facultate\idp\IDP_PROJECT\actions-runner\.credentials_migrated'
+[2025-05-18 12:21:02Z INFO ConfigurationStore] MigratedCredFilePath: D:\facultate\idp\IDP_PROJECT\actions-runner\.credentials_migrated
+[2025-05-18 12:21:02Z INFO HostContext] Well known directory 'Bin': 'D:\facultate\idp\IDP_PROJECT\actions-runner\bin'
+[2025-05-18 12:21:02Z INFO HostContext] Well known directory 'Root': 'D:\facultate\idp\IDP_PROJECT\actions-runner'
+[2025-05-18 12:21:02Z INFO HostContext] Well known config file 'Service': 'D:\facultate\idp\IDP_PROJECT\actions-runner\.service'
+[2025-05-18 12:21:02Z INFO ConfigurationStore] ServiceConfigFilePath: D:\facultate\idp\IDP_PROJECT\actions-runner\.service
+[2025-05-18 12:21:02Z INFO CommandSettings] Flag 'help': 'False'
+[2025-05-18 12:21:02Z INFO CommandSettings] Flag 'version': 'False'
+[2025-05-18 12:21:02Z INFO CommandSettings] Flag 'commit': 'False'
+[2025-05-18 12:21:02Z INFO CommandSettings] Flag 'check': 'False'
+[2025-05-18 12:21:02Z INFO CommandSettings] Command 'configure': 'False'
+[2025-05-18 12:21:02Z INFO CommandSettings] Command 'remove': 'False'
+[2025-05-18 12:21:02Z INFO CommandSettings] Command 'warmup': 'False'
+[2025-05-18 12:21:02Z INFO ConfigurationManager] LoadSettings
+[2025-05-18 12:21:02Z INFO ConfigurationStore] IsConfigured()
+[2025-05-18 12:21:02Z INFO ConfigurationStore] IsConfigured: True
+[2025-05-18 12:21:02Z INFO ConfigurationManager] Is configured: True
+[2025-05-18 12:21:02Z INFO ConfigurationStore] Read setting file: 303 chars
+[2025-05-18 12:21:02Z INFO ConfigurationManager] Settings Loaded
+[2025-05-18 12:21:02Z INFO ConfigurationStore] IsServiceConfigured()
+[2025-05-18 12:21:02Z INFO ConfigurationStore] IsServiceConfigured: False
+[2025-05-18 12:21:02Z INFO CommandSettings] Command 'run': 'True'
+[2025-05-18 12:21:02Z INFO ConfigurationStore] IsConfigured()
+[2025-05-18 12:21:02Z INFO ConfigurationStore] IsConfigured: True
+[2025-05-18 12:21:02Z INFO ConfigurationManager] Is configured: True
+[2025-05-18 12:21:02Z INFO Runner] Could not parse the argument value '' for StartupType. Defaulting to Manual
+[2025-05-18 12:21:02Z INFO Runner] Set runner startup type - Manual
+[2025-05-18 12:21:02Z INFO CommandSettings] Flag 'once': 'False'
+[2025-05-18 12:21:02Z INFO CommandSettings] Flag 'once': 'False'
+[2025-05-18 12:21:02Z INFO Runner] RunAsync
+[2025-05-18 12:21:02Z INFO ConfigurationManager] LoadMigratedSettings
+[2025-05-18 12:21:02Z INFO ConfigurationStore] IsMigratedConfigured()
+[2025-05-18 12:21:02Z INFO ConfigurationStore] IsMigratedConfigured: False
+[2025-05-18 12:21:02Z INFO Runner] Failed to load migrated settings: No migrated configuration found.
+[2025-05-18 12:21:02Z INFO Runner] Falling back to original .runner settings
+[2025-05-18 12:21:02Z INFO ConfigurationManager] LoadSettings
+[2025-05-18 12:21:02Z INFO ConfigurationStore] IsConfigured()
+[2025-05-18 12:21:02Z INFO ConfigurationStore] IsConfigured: True
+[2025-05-18 12:21:02Z INFO ConfigurationManager] Is configured: True
+[2025-05-18 12:21:02Z INFO ConfigurationManager] Settings Loaded
+[2025-05-18 12:21:02Z INFO MessageListener] {
+  "AgentId": 21,
+  "AgentName": "ULTRALNV",
+  "PoolId": 1,
+  "PoolName": "Default",
+  "ServerUrl": "https://pipelinesghubeus8.actions.githubusercontent.com/7cYJL3xbALoMulBil2ICtXqPY1V98TCNAgQIGmmECzN8fQPJv9/",
+  "GitHubUrl": "https://github.com/ultracln/IDP_PROJECT",
+  "WorkFolder": "_work"
+}
+[2025-05-18 12:21:02Z INFO MessageListener] Loading Credentials
+[2025-05-18 12:21:02Z INFO ConfigurationStore] HasCredentials()
+[2025-05-18 12:21:02Z INFO ConfigurationStore] stored True
+[2025-05-18 12:21:02Z INFO CredentialManager] GetCredentialProvider
+[2025-05-18 12:21:02Z INFO CredentialManager] Creating type OAuth
+[2025-05-18 12:21:02Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-18 12:21:02Z INFO HostContext] Well known directory 'Bin': 'D:\facultate\idp\IDP_PROJECT\actions-runner\bin'
+[2025-05-18 12:21:02Z INFO HostContext] Well known directory 'Root': 'D:\facultate\idp\IDP_PROJECT\actions-runner'
+[2025-05-18 12:21:02Z INFO HostContext] Well known config file 'RSACredentials': 'D:\facultate\idp\IDP_PROJECT\actions-runner\.credentials_rsaparams'
+[2025-05-18 12:21:02Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\facultate\idp\IDP_PROJECT\actions-runner\.credentials_rsaparams
+[2025-05-18 12:21:02Z INFO MessageListener] Attempt to create session.
+[2025-05-18 12:21:02Z INFO MessageListener] Connecting to the Runner Server...
+[2025-05-18 12:21:02Z INFO RunnerServer] EstablishVssConnection
+[2025-05-18 12:21:02Z INFO RunnerServer] Establish connection with 100 seconds timeout.
+[2025-05-18 12:21:02Z INFO GitHubActionsService] Starting operation Location.GetConnectionData
+[2025-05-18 12:21:02Z INFO RunnerServer] EstablishVssConnection
+[2025-05-18 12:21:02Z INFO RunnerServer] Establish connection with 60 seconds timeout.
+[2025-05-18 12:21:02Z INFO GitHubActionsService] Starting operation Location.GetConnectionData
+[2025-05-18 12:21:02Z INFO RunnerServer] EstablishVssConnection
+[2025-05-18 12:21:02Z INFO RunnerServer] Establish connection with 60 seconds timeout.
+[2025-05-18 12:21:02Z INFO GitHubActionsService] Starting operation Location.GetConnectionData
+[2025-05-18 12:21:03Z INFO GitHubActionsService] Finished operation Location.GetConnectionData
+[2025-05-18 12:21:03Z INFO GitHubActionsService] Finished operation Location.GetConnectionData
+[2025-05-18 12:21:03Z INFO GitHubActionsService] Finished operation Location.GetConnectionData
+[2025-05-18 12:21:03Z INFO MessageListener] VssConnection created
+[2025-05-18 12:21:03Z INFO Terminal] WRITE LINE: 
+[2025-05-18 12:21:03Z INFO Terminal] WRITE LINE: 
+[2025-05-18 12:21:03Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\facultate\idp\IDP_PROJECT\actions-runner\.credentials_rsaparams
+[2025-05-18 12:21:03Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\facultate\idp\IDP_PROJECT\actions-runner\.credentials_rsaparams
+[2025-05-18 12:21:03Z INFO GitHubActionsService] AAD Correlation ID for this token request: Unknown
+[2025-05-18 12:21:04Z INFO MessageListener] Session created.
+[2025-05-18 12:21:04Z INFO MessageListener] Registering AuthMigrationChanged event handler.
+[2025-05-18 12:21:04Z INFO Terminal] WRITE LINE: Current runner version: '2.324.0'
+[2025-05-18 12:21:04Z INFO Terminal] WRITE LINE: 2025-05-18 12:21:04Z: Listening for Jobs
+[2025-05-18 12:21:04Z INFO JobDispatcher] Set runner/worker IPC timeout to 30 seconds.
+[2025-05-18 12:21:04Z INFO ConfigurationStore] HasCredentials()
+[2025-05-18 12:21:04Z INFO ConfigurationStore] stored True
+[2025-05-18 12:21:04Z INFO CredentialManager] GetCredentialProvider
+[2025-05-18 12:21:04Z INFO CredentialManager] Creating type OAuth
+[2025-05-18 12:21:04Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-18 12:21:04Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\facultate\idp\IDP_PROJECT\actions-runner\.credentials_rsaparams
+[2025-05-18 12:21:04Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\facultate\idp\IDP_PROJECT\actions-runner\.credentials_rsaparams
+[2025-05-18 12:21:04Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\facultate\idp\IDP_PROJECT\actions-runner\.credentials_rsaparams
+[2025-05-18 12:21:04Z INFO GitHubActionsService] AAD Correlation ID for this token request: Unknown
+[2025-05-18 12:21:40Z INFO MessageListener] Message '2697335210228987258' received from session '75851330-ae09-45e1-ad58-f6406279320e'.
+[2025-05-18 12:21:40Z INFO ConfigurationStore] HasCredentials()
+[2025-05-18 12:21:40Z INFO ConfigurationStore] stored True
+[2025-05-18 12:21:40Z INFO CredentialManager] GetCredentialProvider
+[2025-05-18 12:21:40Z INFO CredentialManager] Creating type OAuth
+[2025-05-18 12:21:40Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-18 12:21:40Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\facultate\idp\IDP_PROJECT\actions-runner\.credentials_rsaparams
+[2025-05-18 12:21:40Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\facultate\idp\IDP_PROJECT\actions-runner\.credentials_rsaparams
+[2025-05-18 12:21:40Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\facultate\idp\IDP_PROJECT\actions-runner\.credentials_rsaparams
+[2025-05-18 12:21:40Z INFO GitHubActionsService] AAD Correlation ID for this token request: Unknown
+[2025-05-18 12:21:41Z INFO JobDispatcher] Job request 0 for plan d23bda06-ed7d-47df-8c9a-377e54eea35b job cd1604d6-bf5c-57b9-a7ec-1aae86433c8d received.
+[2025-05-18 12:21:41Z INFO MessageListener] Received job status event. JobState: Busy
+[2025-05-18 12:21:41Z INFO MessageListener] _getMessagesTokenSource is already disposed.
+[2025-05-18 12:21:41Z INFO Terminal] WRITE LINE: 2025-05-18 12:21:41Z: Running job: deploy
+[2025-05-18 12:21:41Z INFO JobDispatcher] Start renew job request 0 for job cd1604d6-bf5c-57b9-a7ec-1aae86433c8d.
+[2025-05-18 12:21:41Z INFO JobDispatcher] Successfully renew job cd1604d6-bf5c-57b9-a7ec-1aae86433c8d, job is valid till 18/05/2025 12:31:41
+[2025-05-18 12:21:41Z INFO HostContext] Well known directory 'Bin': 'D:\facultate\idp\IDP_PROJECT\actions-runner\bin'
+[2025-05-18 12:21:41Z INFO ProcessInvokerWrapper] Starting process:
+[2025-05-18 12:21:41Z INFO ProcessInvokerWrapper]   File name: 'D:\facultate\idp\IDP_PROJECT\actions-runner\bin\Runner.Worker.exe'
+[2025-05-18 12:21:41Z INFO ProcessInvokerWrapper]   Arguments: 'spawnclient 2092 1984'
+[2025-05-18 12:21:41Z INFO ProcessInvokerWrapper]   Working directory: 'D:\facultate\idp\IDP_PROJECT\actions-runner\bin'
+[2025-05-18 12:21:41Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2025-05-18 12:21:41Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2025-05-18 12:21:41Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'True'
+[2025-05-18 12:21:41Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2025-05-18 12:21:41Z INFO ProcessInvokerWrapper]   Persist current code page: 'False'
+[2025-05-18 12:21:41Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2025-05-18 12:21:41Z INFO ProcessInvokerWrapper]   High priority process: 'True'
+[2025-05-18 12:21:41Z INFO ProcessInvokerWrapper] Process started with process id 6404, waiting for process exit.
+[2025-05-18 12:21:41Z INFO JobDispatcher] Send job request message to worker for job cd1604d6-bf5c-57b9-a7ec-1aae86433c8d.
+[2025-05-18 12:21:41Z INFO ProcessChannel] Sending message of length 18925, with hash '8ea87cb599b2eb55d8410e42ffaf24fd18b4a8c7d4de5d50420b9e561901cca3'
+[2025-05-18 12:21:42Z INFO JobNotification] Entering JobStarted Notification
+[2025-05-18 12:21:42Z INFO JobNotification] Entering StartMonitor
+[2025-05-18 12:21:42Z INFO ConfigurationStore] HasCredentials()
+[2025-05-18 12:21:42Z INFO ConfigurationStore] stored True
+[2025-05-18 12:21:42Z INFO CredentialManager] GetCredentialProvider
+[2025-05-18 12:21:42Z INFO CredentialManager] Creating type OAuth
+[2025-05-18 12:21:42Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-18 12:21:42Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\facultate\idp\IDP_PROJECT\actions-runner\.credentials_rsaparams
+[2025-05-18 12:21:50Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-05-18 12:21:50Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-05-18 12:21:50Z INFO ProcessInvokerWrapper] Finished process 6404 with exit code 102, and elapsed time 00:00:08.8654438.
+[2025-05-18 12:21:50Z INFO JobDispatcher] Worker finished for job cd1604d6-bf5c-57b9-a7ec-1aae86433c8d. Code: 102
+[2025-05-18 12:21:50Z INFO JobDispatcher] finish job request for job cd1604d6-bf5c-57b9-a7ec-1aae86433c8d with result: Failed
+[2025-05-18 12:21:50Z INFO Terminal] WRITE LINE: 2025-05-18 12:21:50Z: Job deploy completed with result: Failed
+[2025-05-18 12:21:50Z INFO JobDispatcher] Stop renew job request for job cd1604d6-bf5c-57b9-a7ec-1aae86433c8d.
+[2025-05-18 12:21:50Z INFO JobDispatcher] job renew has been cancelled, stop renew job cd1604d6-bf5c-57b9-a7ec-1aae86433c8d.
+[2025-05-18 12:21:50Z INFO JobNotification] Entering JobCompleted Notification
+[2025-05-18 12:21:50Z INFO JobNotification] Entering EndMonitor
+[2025-05-18 12:21:50Z INFO MessageListener] Received job status event. JobState: Online
+[2025-05-18 12:22:33Z INFO ConfigurationStore] HasCredentials()
+[2025-05-18 12:22:33Z INFO ConfigurationStore] stored True
+[2025-05-18 12:22:33Z INFO CredentialManager] GetCredentialProvider
+[2025-05-18 12:22:33Z INFO CredentialManager] Creating type OAuth
+[2025-05-18 12:22:33Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-18 12:22:33Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\facultate\idp\IDP_PROJECT\actions-runner\.credentials_rsaparams
+[2025-05-18 12:23:23Z INFO ConfigurationStore] HasCredentials()
+[2025-05-18 12:23:23Z INFO ConfigurationStore] stored True
+[2025-05-18 12:23:23Z INFO CredentialManager] GetCredentialProvider
+[2025-05-18 12:23:23Z INFO CredentialManager] Creating type OAuth
+[2025-05-18 12:23:23Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-18 12:23:23Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\facultate\idp\IDP_PROJECT\actions-runner\.credentials_rsaparams
