@@ -29,7 +29,7 @@ PROD WORKFLOW:
 (deploy the latest working images)
 
 # start cluster
-./start-prod.sh
+./deploy.sh
 
 # stop cluster
 ./stop.sh
