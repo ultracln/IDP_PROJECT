@@ -29,7 +29,6 @@ services:
       replicas: 1
 
   auth-service:
-    build: ./auth-service
     image: bookswap/auth-service
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://bookswap-app-db:5432/postgres
@@ -43,7 +42,6 @@ services:
       replicas: 1
 
   book-service:
-    build: ./book-service
     image: bookswap/book-service
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://bookswap-app-db:5432/postgres
@@ -79,11 +77,9 @@ services:
     networks:
       - bookswap-net
 
-
 volumes:
   pg_data:
 
 networks:
   bookswap-net:
-    driver: overlay
-    attachable: true
+    external: true

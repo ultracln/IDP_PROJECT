@@ -39,12 +39,17 @@ token:
 auth-service:
   base-url: http://auth-service:8081
 
-# springdoc:
-#  api-docs:
-#    default-produces-media-type: application/json
-#  default-produces-media-type: application/json
-#  model-converters:
-#    pageable-enabled: true
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    prometheus:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
 
 

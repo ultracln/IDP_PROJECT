@@ -36,3 +36,16 @@ admin:
   username: admin
   email: admin@admin.com
   password: admin
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    prometheus:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true

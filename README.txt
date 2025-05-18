@@ -1,4 +1,4 @@
------------------------------------------------------
+----------------------------------------------------------------------
 LOCAL DEV WORKFLOW:
 (making local changes and testing them without
 pushing to github/docker hub)
@@ -13,7 +13,7 @@ pushing to github/docker hub)
 docker stack ls
 docker stack services bookswap
 docker stack ps bookswap
------------------------------------------------------
+----------------------------------------------------------------------
 GIT WORKFLOW (auto-build & push via github actions)
 for every change in the project (especially backend):
 
@@ -23,7 +23,7 @@ git push origin main
 
 (github actions automatically builds and pushes
 the docker images to docker hub)
------------------------------------------------------
+----------------------------------------------------------------------
 PROD WORKFLOW:
 (deploy the latest working images)
 
@@ -32,7 +32,7 @@ PROD WORKFLOW:
 
 # stop cluster
 ./stop.sh
------------------------------------------------------
+----------------------------------------------------------------------
 PGADMIN - http://localhost:5050/
 
 email: admin@admin.com
@@ -45,7 +45,7 @@ Port	5432
 Maintenance DB	postgres
 Username	postgres
 Password	postgres
------------------------------------------------------
+----------------------------------------------------------------------
 PORTAINER - http://localhost:9000/
 
 a portainer agent running on every node
@@ -53,13 +53,28 @@ a single portainer ui container on the manager
 
 username: admin
 password: admin1234
------------------------------------------------------
+
+----------------------------------------------------------------------
+PROMETHEUS - http://localhost:9090/
+
+http://localhost:9090/targets → service monitoring status
+http://localhost:9090/query → run queries
+(prometheus_http_requests_total, http_server_requests_seconds_count)
+----------------------------------------------------------------------
+GRAFANA - http://localhost:3000/
+
+username: admin  
+password: admin
+
+import dashboard -> 1860 (node exporter)  -> http://prometheus:9090
+                 -> 4701 (jvm micrometer) -> http://prometheus:9090
+----------------------------------------------------------------------
 FRONTEND - http://localhost:3000/
 
 cd frontend/
 npm install
 npm run dev
------------------------------------------------------
+----------------------------------------------------------------------
 ENDPOINTS:
 - auth-service:
   - 'POST /api/v1/auth/register' – inregistrare utilizator
