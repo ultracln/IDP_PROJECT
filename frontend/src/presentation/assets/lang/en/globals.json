@@ -1,0 +1,46 @@
+{
+    "globals.welcome": "Welcome!",
+    "globals.login": "Login",
+    "globals.logout": "Logout",
+    "globals.submit": "Submit",
+    "globals.email": "E-mail",
+    "globals.password": "Password",
+    "globals.refresh": "Refresh",
+    "globals.loadingFailed": "Loading failed",
+    "globals.loading": "Loading",
+    "globals.users": "Users",
+    "globals.files": "Files",
+    "globals.name": "Name",
+    "globals.role": "Role",
+    "globals.admin": "Admin",
+    "globals.client": "Client",
+    "globals.personnel": "Personnel",
+    "globals.description": "Description",
+    "globals.addBy": "Added by", 
+    "globals.createdAt": "Created at",
+    "globals.file": "File",
+    "globals.placeholders.textInput": "Please enter {fieldName}",
+    "globals.placeholders.selectInput": "Please select the {fieldName}",
+    "globals.validations.requiredField": "{fieldName} is a required field!",
+    "globals.register": "Register",
+    "globals.validations.passwordMinLength": "Password must be at least 6 characters long",
+    "globals.book": "Book",
+    "globals.books": "Books",
+    "globals.bookTitle": "Book Title",
+    "globals.bookAuthor": "Book Author",
+    "globals.allBooks": "All Books",
+    "globals.myBooks": "My Books",
+    "globals.feedback": "Feedback",
+    "notifications": {
+        "messages": {
+            "registrationSuccess": "Registration successful!",
+            "authenticationSuccess": "Authentication successful!",
+            "invalidToken": "Invalid token"
+        },
+        "errors": {
+            "registrationFailed": "Registration failed",
+            "authenticationFailed": "Authentication failed",
+            "invalidToken": "Invalid token"
+        }
+    }
+}

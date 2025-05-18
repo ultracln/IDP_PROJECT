@@ -54,6 +54,12 @@ a single portainer ui container on the manager
 username: admin
 password: admin1234
 -----------------------------------------------------
+FRONTEND - http://localhost:3000/
+
+cd frontend/
+npm install
+npm run dev
+-----------------------------------------------------
 ENDPOINTS:
 - auth-service:
   - 'POST /api/v1/auth/register' – inregistrare utilizator
