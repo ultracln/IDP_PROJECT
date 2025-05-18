@@ -45,3 +45,9 @@ jobs:
           docker build -t ${{ secrets.DOCKER_USERNAME }}/book-service:latest -t ${{ secrets.DOCKER_USERNAME }}/book-service:${{ steps.vars.outputs.sha }} ./book-service
           docker push ${{ secrets.DOCKER_USERNAME }}/book-service:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/book-service:${{ steps.vars.outputs.sha }}
+
+      - name: Build and Push Frontend
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend:latest -t ${{ secrets.DOCKER_USERNAME }}/frontend:${{ steps.vars.outputs.sha }} ./frontend
+          docker push ${{ secrets.DOCKER_USERNAME }}/frontend:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/frontend:${{ steps.vars.outputs.sha }}

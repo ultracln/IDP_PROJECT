@@ -1,3 +1,4 @@
+BOOKSWAP - http://localhost:3001/
 ----------------------------------------------------------------------
 LOCAL DEV WORKFLOW:
 (making local changes and testing them without
@@ -68,12 +69,6 @@ password: admin
 
 import dashboard -> 1860 (node exporter)  -> http://prometheus:9090
                  -> 4701 (jvm micrometer) -> http://prometheus:9090
-----------------------------------------------------------------------
-FRONTEND - http://localhost:3000/
-
-cd frontend/
-npm install
-npm run dev
 ----------------------------------------------------------------------
 ENDPOINTS:
 - auth-service:
