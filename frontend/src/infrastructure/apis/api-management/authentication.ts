@@ -11,13 +11,13 @@ const loginMutationKey = "loginMutation";
 
 export const useLogin = () => {
   const configuration = new Configuration({
-    basePath: "http://localhost:8081" // 🔧 Aici e cheia!
+    basePath: "http://localhost:8081"
   });
   const api = new AuthControllerApi(configuration);
 
   return useMutation({
     mutationKey: [loginMutationKey],
     mutationFn: (loginDTO: LoginDto) =>
-      api.login({ loginDto: loginDTO }) // metoda generată de OpenAPI
+      api.login({ loginDto: loginDTO })
   });
 };

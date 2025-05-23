@@ -16,14 +16,12 @@ export enum AppRoute {
     Admin = "/admin"
 }
 
-// Route configuration for React Router
 interface RouteConfig {
     path: string;
     element: React.ComponentType;
     private: boolean;
 }
 
-// Lazy load components with named exports
 const HomePage = React.lazy(() => 
     import("./presentation/pages/HomePage").then(module => ({ default: module.HomePage }))
 );

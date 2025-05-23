@@ -10,7 +10,7 @@
     "globals.loading": "Se incarca",
     "globals.users": "Utilizatori",
     "globals.files": "Fisiere",
-    "globals.name": "Nume",
+    "globals.username": "Nume",
     "globals.role": "Rol",
     "globals.admin": "Administrator",
     "globals.client": "Client",

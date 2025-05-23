@@ -10,7 +10,7 @@
     "globals.loading": "Loading",
     "globals.users": "Users",
     "globals.files": "Files",
-    "globals.name": "Name",
+    "globals.username": "Name",
     "globals.role": "Role",
     "globals.admin": "Admin",
     "globals.client": "Client",
